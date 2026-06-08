@@ -30,7 +30,7 @@
 
 ## Links/PRs
 
-* GitHub Repository: [Add your GitHub repository link here]
+* GitHub Repository: "https://github.com/abdnad-ai/internship-roadmap.git"
 
 ## AI Tools Used
 
