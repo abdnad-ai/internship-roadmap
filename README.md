@@ -32,3 +32,20 @@ This repository contains my 8-week AI-Native Software Engineering Internship wor
 - Added README file.
 - Prepared folders for daily reports, AI usage reports, prompts, Next.js projects, NestJS projects, full-stack projects, assessments, and capstone work.
 - Prepared the repository for GitHub submission. 
+
+## Week 1 Day 1 Setup Status
+
+## Completed:
+- Git and GitHub setup
+- Repository initialized and pushed
+- VS Code setup
+- Node.js and npm setup
+- React DevTools setup
+- Postman setup
+- Cursor setup
+- Docker Desktop installation
+- PostgreSQL installation and PATH setup
+
+## Pending:
+- Claude Code setup, pending company authentication/access
+- Final Docker Engine runtime verification, if required  
