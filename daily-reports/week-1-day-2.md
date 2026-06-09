@@ -21,7 +21,6 @@
 * Generated a merge conflict and resolved it manually.
 * Created and merged a conflict resolution Pull Request.
 
-## Links/PRs
 
 ## Links/PRs
 
