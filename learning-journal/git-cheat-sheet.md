@@ -67,3 +67,53 @@ Merges another branch into the current branch.
 ## My Understanding
 
 This cheat sheet helps me remember the most commonly used Git commands. These commands are important because they support daily development, version control, collaboration, and safe project updates.
+
+## Meaningful Commit Messages
+
+A meaningful commit message clearly explains what was changed. It helps other developers understand the project history without opening every file.
+
+### Good Commit Message Examples
+
+docs: add git workflow overview
+
+docs: add branch workflow notes
+
+docs: add pull request workflow notes
+
+docs: add conflict resolution notes
+
+fix: correct spelling in daily report
+
+chore: create week 1 day 2 files
+
+### Bad Commit Message Examples
+
+update
+
+changes
+
+final
+
+new work
+
+stuff
+
+### Commit Message Pattern
+
+type: short explanation
+
+Common types:
+
+docs -> documentation changes
+
+fix -> bug fixes
+
+feat -> new feature
+
+chore -> setup or maintenance work
+
+refactor -> code improvement without changing behavior
+
+## My Understanding
+
+Good commit messages make the repository easier to understand and review. For internship work, meaningful commits also show clear progress and professional discipline.
