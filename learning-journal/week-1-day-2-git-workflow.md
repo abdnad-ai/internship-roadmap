@@ -151,3 +151,46 @@ git merge week-1-day-2-git-workflow
 
 Merging is used when work from a separate branch is ready to become part of the main project. It should be done carefully after checking that the changes are correct.
 
+## Conflict Resolution Basics
+
+A Git conflict happens when two different changes are made to the same part of a file, and Git cannot decide which change should be kept automatically.
+
+Conflicts can happen during merge, pull, or rebase.
+
+### Common Conflict Situation
+
+A conflict may happen when:
+
+1. The same file is edited on two different branches
+
+2. The same line is changed differently
+
+3. One branch deletes something that another branch edits
+
+### Basic Conflict Resolution Steps
+
+1. Open the conflicted file
+
+2. Find the conflict markers
+
+3. Decide which change should stay
+
+4. Remove the conflict markers
+
+5. Save the file
+
+6. Add the resolved file
+
+7. Commit the resolution
+
+### Commands Used After Resolving
+
+git status
+
+git add filename
+
+git commit -m "fix: resolve merge conflict"
+
+## My Understanding
+
+Conflict resolution is an important Git skill because real projects often involve multiple branches and multiple developers. The safest way to resolve conflicts is to read the file carefully, keep the correct changes, and test the result before committing.
