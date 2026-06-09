@@ -41,3 +41,36 @@ Help me verify Node.js, npm, Docker, PostgreSQL, Postman, Cursor, and React DevT
 ### Prompt 10
 
 Help me fix PostgreSQL psql PATH issue so I can run psql --version from VS Code terminal.
+
+## Week 1 Day 2 — Git Workflow Prompts
+### Prompt 1
+
+Guide me through Week 1 Day 2 of my internship roadmap and explain what Git workflow tasks I need to complete today.
+
+### Prompt 2
+
+Explain what a Git branch is in simple terms and why we create separate branches for daily work.
+
+### Prompt 3
+
+Explain the difference between git add ., git add filename, and why specific file commits are better for clean Git history.
+
+### Prompt 4
+
+Help me create meaningful commit messages for Git workflow practice.
+
+### Prompt 5
+
+Explain what a Pull Request is and how it helps in professional development workflow.
+
+### Prompt 6
+
+Explain Git merge and conflict resolution in beginner-friendly language.
+
+### Prompt 7
+
+Help me organize Week 1 Day 2 Git learning journal notes.
+
+### Prompt 8
+
+Help me prepare a daily report and AI usage report for Week 1 Day 2.
