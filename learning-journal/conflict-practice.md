@@ -1,3 +1,3 @@
 # Conflict Practice
 
-Conflict practice result: base version
+Conflict practice result: branch A version
