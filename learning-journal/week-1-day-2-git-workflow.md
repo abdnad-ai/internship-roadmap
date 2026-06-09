@@ -102,3 +102,27 @@ git status
 ## My Understanding
 
 The push and pull workflow helps keep local work and GitHub work connected. I should pull before starting important work and push after making commits so my progress is backed up online.
+
+## Pull Request Workflow
+
+A Pull Request is used to review changes before merging them into the main branch.
+
+In a professional workflow, developers usually do not push directly to main. Instead, they create a separate branch, push the branch to GitHub, and open a Pull Request.
+
+### Pull Request Steps
+
+1. Create a task branch
+
+2. Make changes and commits
+
+3. Push the branch to GitHub
+
+4. Open a Pull Request from the task branch into main
+
+5. Review the changes
+
+6. Merge the Pull Request after approval
+
+## My Understanding
+
+A Pull Request makes the workflow safer because it gives a chance to review code before it becomes part of the main project.
