@@ -16,12 +16,19 @@
 * Added examples of meaningful and poor commit messages.
 * Practiced making small and meaningful commits instead of one large commit.
 * Updated the prompts file with Git-related prompts used during the task.
+* Practiced a real Git conflict resolution exercise.
+* Created separate conflict practice branches.
+* Generated a merge conflict and resolved it manually.
+* Created and merged a conflict resolution Pull Request.
+
+## Links/PRs
 
 ## Links/PRs
 
 * GitHub Repository: "https://github.com/abdnad-ai/internship-roadmap.git"
 * Branch: `week-1-day-2-git-workflow`
-* Pull Request: To be added after PR creation
+* Pull Request 1: Week 1 Day 2 Git Workflow Practice
+* Pull Request 2: Week 1 Day 2 Conflict Resolution Practice
 
 ## AI Tools Used
 
@@ -47,7 +54,7 @@
 ## Bugs/Blockers
 
 * No major blockers so far.
-* Pull Request creation, merge, and final screenshot proof are still pending for the final part of today’s work.
+
 
 ## What I Learned
 

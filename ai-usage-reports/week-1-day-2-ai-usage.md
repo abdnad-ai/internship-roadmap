@@ -42,6 +42,8 @@ ChatGPT explained the Week 1 Day 2 Git workflow tasks and helped organize the wo
 * Ran Git commands manually in VS Code terminal.
 * Made separate meaningful commits for different documentation updates.
 * Reviewed the explanations before adding them to the repository.
+* Created and resolved a practical Git merge conflict.
+* Created and merged a separate Pull Request for conflict resolution practice.
 
 ## Risks Found
 
