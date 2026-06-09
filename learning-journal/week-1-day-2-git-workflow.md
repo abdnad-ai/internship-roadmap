@@ -76,3 +76,29 @@ git pull origin main
 ## My Understanding
 
 Using branches keeps work organized and safe. Instead of making changes directly on main, I can work on a separate branch and merge it later after review.
+
+## Push and Pull Workflow
+
+Pushing and pulling are used to sync local work with GitHub.
+
+git push uploads local commits to the remote GitHub repository.
+
+git pull downloads the latest changes from GitHub into the local repository.
+
+### Commands Practiced
+
+To push the current branch to GitHub:
+
+git push -u origin week-1-day-2-git-workflow
+
+To pull the latest changes from the main branch:
+
+git pull origin main
+
+To check whether the local branch is synced:
+
+git status
+
+## My Understanding
+
+The push and pull workflow helps keep local work and GitHub work connected. I should pull before starting important work and push after making commits so my progress is backed up online.
