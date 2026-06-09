@@ -126,3 +126,28 @@ In a professional workflow, developers usually do not push directly to main. Ins
 ## My Understanding
 
 A Pull Request makes the workflow safer because it gives a chance to review code before it becomes part of the main project.
+
+## Merge Workflow
+
+Merging is the process of combining changes from one branch into another branch.
+
+In today’s workflow, the Day 2 branch will later be merged into main after the Pull Request is reviewed.
+
+### Merge Commands
+
+To switch to main:
+
+git checkout main
+
+To pull the latest main branch:
+
+git pull origin main
+
+To merge another branch into the current branch:
+
+git merge week-1-day-2-git-workflow
+
+## My Understanding
+
+Merging is used when work from a separate branch is ready to become part of the main project. It should be done carefully after checking that the changes are correct.
+
