@@ -48,3 +48,31 @@ edit files -> git status -> git add -> git commit -> git push
 
 
 This workflow helps keep my work organized and makes it easier to review project progress step by step.
+
+## Branch Workflow
+
+A branch is a separate workspace in Git. It allows me to work on a new task without directly changing the main branch.
+
+The main branch usually contains stable work. A feature or task branch is used for new changes, practice work, fixes, or experiments.
+
+### Commands Practiced
+
+To check the current branch:
+
+git branch
+
+To create and switch to a new branch:
+
+git checkout -b week-1-day-2-git-workflow
+
+To switch back to the main branch:
+
+git checkout main
+
+To pull the latest changes from GitHub:
+
+git pull origin main
+
+## My Understanding
+
+Using branches keeps work organized and safe. Instead of making changes directly on main, I can work on a separate branch and merge it later after review.
