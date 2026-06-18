@@ -15,13 +15,13 @@ Claude
 Provided the updated users service returning an in memory list, CORS setup in main.ts, and a users page using useEffect fetch with the four states.
 
 ## What I Accepted
-(your words)
+I accepted the in memory users list on the backend, the CORS configuration, and the users page structure with the four states, since they matched what the day required.
 
 ## What I Rejected
-(your words)
+I did not add anything beyond the users list page, since the deliverable was specifically the list connected to the backend, not the full create flow from the form.
 
 ## Manual Changes Made
-(your words)
+I created the route in the correct folder, ran both servers, verified the JSON endpoint, and tested the error state by stopping the backend.
 
 ## Risks Found
 * The localhost URL is hardcoded and would move to an env variable for real deployment.
@@ -29,4 +29,4 @@ Provided the updated users service returning an in memory list, CORS setup in ma
 
 ## Final Explanation in My Own Words
 (your words: how data flows from the UI fetch to the NestJS endpoint and back, and why CORS and loading and error states matter)
-'@ | Set-Content -Path "C:\Users\abdullah\Desktop\internship-roadmap\ai-usage-reports\week-2-day-4-ai-usage.md" -Encoding utf8 
+'@ | Set-Content -Path "C:\Users\abdullah\Desktop\internship-roadmap\ai-usage-reports\week-2-day-4-ai-usage.md" -Encoding utf8  
