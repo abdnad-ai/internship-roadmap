@@ -10,9 +10,11 @@ export class UsersService {
     { id: 3, name: 'anthony', email: 'anthony@test.com' },
   ];
 
+  private nextId = 4; 
+
   create(createUserDto: CreateUserDto) {
     const newUser = {
-      id: this.users.length + 1,
+      id: this.nextId++,
       name: createUserDto.name,
       email: createUserDto.email,
     };
@@ -36,4 +38,4 @@ export class UsersService {
     this.users = this.users.filter((u) => u.id !== id);
     return { message: `User ${id} removed` };
   }
-}  
+}
