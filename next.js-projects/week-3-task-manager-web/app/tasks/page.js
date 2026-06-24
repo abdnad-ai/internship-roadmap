@@ -1,0 +1,252 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
+const API_URL = "http://localhost:3001/tasks";
+
+export default function TasksPage() {
+  const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+
+  async function loadTasks() { 
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch(API_URL);
+      if (!res.ok) throw new Error("Failed to load tasks");
+      const data = await res.json();
+      setTasks(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    loadTasks();
+  }, []);
+
+  async function handleCreate(e) {
+    e.preventDefault();
+    if (!title.trim()) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, description }),
+      });
+      if (!res.ok) throw new Error("Failed to create task");
+      setTitle("");
+      setDescription("");
+      await loadTasks();
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  function startEdit(task) {
+    setEditingId(task.id);
+    setEditTitle(task.title);
+    setEditDescription(task.description || "");
+  }
+
+  async function handleUpdate(id) {
+    try {
+      const res = await fetch(`${API_URL}/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: editTitle, description: editDescription }),
+      });
+      if (!res.ok) throw new Error("Failed to update task");
+      setEditingId(null);
+      await loadTasks();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  async function toggleComplete(task) {
+    try {
+      const res = await fetch(`${API_URL}/${task.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ completed: !task.completed }),
+      });
+      if (!res.ok) throw new Error("Failed to update task");
+      await loadTasks();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  async function handleDelete(id) {
+    try {
+      const res = await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Failed to delete task");
+      await loadTasks();
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
+  return (
+    <main className="min-h-screen bg-gradient-to-br from-stone-900 via-neutral-900 to-amber-950">
+      <div className="mx-auto max-w-2xl px-4 py-10">
+        <h1 className="mb-6 text-4xl font-extrabold tracking-tight text-orange-600">
+          📝 My Tasks
+        </h1> 
+
+        <form
+          onSubmit={handleCreate}
+          className="mb-8 rounded-3xl bg-stone-800 p-5 shadow-lg shadow-black/30"
+        >
+          <input
+            type="text"
+            placeholder="What needs doing?"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="mb-3 w-full rounded-2xl border border-orange-700 bg-transparent px-4 py-3 text-white outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-300"
+          />
+          <input
+            type="text"
+            placeholder="Add a few details (optional)"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="mb-3 w-full rounded-2xl border border-orange-700 bg-transparent px-4 py-3 text-white outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-300"
+          />
+          <button
+            type="submit"
+            disabled={submitting}
+            className="rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 px-6 py-3 font-semibold text-white shadow-md transition hover:scale-105 hover:shadow-lg disabled:opacity-60"
+          >
+            {submitting ? "Adding..." : "Add task ✨"}
+          </button>
+        </form>
+
+        {loading && (
+          <p className="text-center text-orange-500">Loading your tasks...</p>
+        )}
+
+        {error && !loading && (
+          <div className="rounded-2xl bg-rose-50 p-4 text-center">
+            <p className="mb-2 text-rose-600">{error}</p>
+            <button
+              onClick={loadTasks}
+              className="rounded-xl bg-rose-500 px-4 py-2 font-medium text-white"
+            >
+              Try again
+            </button>
+          </div>
+        )}
+
+        {!loading && !error && tasks.length === 0 && (
+          <div className="rounded-3xl bg-stone-800 p-10 text-center shadow-md">
+            <p className="text-5xl">🌱</p>
+            <p className="mt-3 text-lg font-medium text-gray-600">
+              No tasks yet. Add your first one above!
+            </p>
+          </div>
+        )}
+
+        {!loading && !error && tasks.length > 0 && (
+          <ul className="space-y-4">
+            {tasks.map((task) => (
+              <li
+                key={task.id}
+                className={`rounded-3xl border-l-8 bg-stone-800 p-5 shadow-md transition-all duration-300 ${
+                  task.completed ? "border-green-400" : "border-orange-400"
+                }`} 
+              >
+                {editingId === task.id ? (
+                  <div>
+                    <input
+                      type="text"
+                      value={editTitle}
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      className="mb-3 w-full rounded-2xl border border-orange-200 px-4 py-2 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                    />
+                    <input
+                      type="text"
+                      value={editDescription}
+                      onChange={(e) => setEditDescription(e.target.value)}
+                      className="mb-3 w-full rounded-2xl border border-orange-200 px-4 py-2 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                    />
+                    <button
+                      onClick={() => handleUpdate(task.id)}
+                      className="rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-2 font-medium text-white"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => setEditingId(null)}
+                      className="ml-2 rounded-xl bg-gray-100 px-4 py-2 font-medium text-gray-600"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="flex items-start justify-between gap-3">
+                      <h3
+                        className={`text-lg font-bold ${
+                          task.completed ? "text-gray-400" : "text-gray-100"
+                        }`} 
+                      >
+                        {task.title}
+                      </h3>
+                      <span
+                        className={`shrink-0 rounded-full px-3 py-1 text-xs font-semibold ${
+                          task.completed
+                            ? "bg-green-100 text-green-700"
+                            : "bg-orange-100 text-orange-700"
+                        }`}
+                      >
+                        {task.completed ? "Done 🎉" : "To do"}
+                      </span>
+                    </div> 
+                    {task.description && (
+                      <p className="mt-1 text-gray-400">{task.description}</p>
+                    )}
+                    <div className="mt-4 flex gap-2">
+                      <button
+                        onClick={() => toggleComplete(task)}
+                         className="rounded-full bg-orange-100 px-4 py-1.5 text-sm font-medium text-orange-700 transition active:scale-95 hover:bg-orange-200"
+                      >
+                        {task.completed ? "Mark not done" : "Mark done"}
+                      </button>
+                      <button
+                        onClick={() => startEdit(task)}
+                        className="rounded-full bg-gray-100 px-4 py-1.5 text-sm font-medium text-gray-600 transition hover:bg-gray-200"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(task.id)}
+                        className="rounded-full bg-rose-100 px-4 py-1.5 text-sm font-medium text-rose-700 transition hover:bg-rose-200"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </main>
+  );
+}
