@@ -16,7 +16,7 @@ Date: 2026-06-24
 
 ## Links and PRs
 Branch: week-3-day-3-task-manager-ui
-Pull request: 
+Pull request: https://github.com/abdnad-ai/internship-roadmap/pull/18
 
 ## AI Tools Used
 Claude
