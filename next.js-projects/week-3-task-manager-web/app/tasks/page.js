@@ -140,12 +140,12 @@ export default function TasksPage() {
             onChange={(e) => setTitle(e.target.value)}
             className="mb-3 w-full rounded-2xl border border-orange-700 bg-transparent px-4 py-3 text-white outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-300"
           />
-          <input
-            type="text"
+          <textarea
             placeholder="Add a few details (optional)"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="mb-3 w-full rounded-2xl border border-orange-700 bg-transparent px-4 py-3 text-white outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-300"
+            rows={3}
+            className="mb-3 w-full resize-y rounded-2xl border border-orange-700 bg-transparent px-4 py-3 text-white outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-300"
           />
           <button
             type="submit"
@@ -240,17 +240,17 @@ export default function TasksPage() {
                 >
                   {editingId === task.id ? (
                     <div>
-                      <input
+                     <input
                         type="text"
                         value={editTitle}
                         onChange={(e) => setEditTitle(e.target.value)}
-                        className="mb-3 w-full rounded-2xl border border-orange-200 px-4 py-2 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
-                      />
-                      <input
-                        type="text"
+                        className="mb-3 w-full rounded-2xl border border-orange-700 bg-transparent px-4 py-2 text-white outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-300"
+                      /> 
+                      <textarea
                         value={editDescription}
                         onChange={(e) => setEditDescription(e.target.value)}
-                        className="mb-3 w-full rounded-2xl border border-orange-200 px-4 py-2 outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200"
+                        rows={3}
+                        className="mb-3 w-full resize-y rounded-2xl border border-orange-700 bg-transparent px-4 py-2 text-white outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-300"
                       />
                       <button
                         onClick={() => handleUpdate(task.id)}
@@ -286,7 +286,7 @@ export default function TasksPage() {
                         </span>
                       </div>
                       {task.description && (
-                        <p className="mt-1 text-gray-400">{task.description}</p>
+                        <p className="mt-1 whitespace-pre-line text-gray-400">{task.description}</p>
                       )}
                       <div className="mt-4 flex gap-2">
                         <button
