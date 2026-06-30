@@ -1,11 +1,16 @@
-import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Post, HttpCode, HttpStatus, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { RefreshAuthGuard } from './guards/refresh-auth.guard';
 
 @Controller('auth')
+
 export class AuthController {
   constructor(private authService: AuthService) {}
+  
 
   @Post('register')
   register(@Body() dto: RegisterDto) {
@@ -16,5 +21,26 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  getMe(@CurrentUser() user: { id: number; email: string }) {
+    return user;
+  }
+
+  @UseGuards(RefreshAuthGuard)
+  @Post('refresh')
+  refresh(
+    @CurrentUser() user: { id: number; email: string; refreshToken: string },
+  ) {
+    return this.authService.refresh(user.id, user.refreshToken);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('logout')
+  @HttpCode(HttpStatus.OK)
+  logout(@CurrentUser() user: { id: number }) {
+    return this.authService.logout(user.id);
   }
 }
