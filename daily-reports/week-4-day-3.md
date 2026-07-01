@@ -16,7 +16,7 @@ Date: 2026-07-01
 
 ## Links and PRs
 Branch: week-4-day-3-auth-screens-protected-dashboard
-Pull request: 
+Pull request: https://github.com/abdnad-ai/internship-roadmap/pull/23 
 
 ## AI Tools Used
 Claude
