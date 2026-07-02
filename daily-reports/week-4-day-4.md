@@ -16,7 +16,7 @@ Date: 2026-07-01
 
 ## Links and PRs
 Branch: week-4-day-4-roles-permissions
-Pull request: 
+Pull request: https://github.com/abdnad-ai/internship-roadmap/pull/24 
 
 ## AI Tools Used
 Claude
