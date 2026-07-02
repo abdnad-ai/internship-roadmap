@@ -5,6 +5,9 @@ import { LoginDto } from './dto/login.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
 import { RefreshAuthGuard } from './guards/refresh-auth.guard';
+import { Roles } from './decorators/roles.decorator';
+import { RolesGuard } from './guards/roles.guard';
+
 
 @Controller('auth')
 
@@ -42,5 +45,11 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   logout(@CurrentUser() user: { id: number }) {
     return this.authService.logout(user.id);
+  }
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  @Get('users')
+  getAllUsers() {
+    return this.authService.getAllUsers();
   }
 }

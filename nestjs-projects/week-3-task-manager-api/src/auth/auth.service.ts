@@ -17,6 +17,8 @@ export class AuthService {
     private prisma: PrismaService,
     private jwt: JwtService,
     private config: ConfigService,
+
+    
   ) {}
 
   async register(dto: RegisterDto) {
@@ -30,9 +32,11 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(dto.password, 10);
     const user = await this.prisma.user.create({
       data: { email: dto.email, password: hashedPassword },
+
+      
     });
 
-    return this.issueTokens(user.id, user.email);
+    return this.issueTokens(user.id, user.email, user.role);
   }
 
   async login(dto: LoginDto) {
@@ -48,7 +52,7 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
-    return this.issueTokens(user.id, user.email);
+    return this.issueTokens(user.id, user.email, user.role);
   }
 
   async logout(userId: number) {
@@ -57,6 +61,12 @@ export class AuthService {
       data: { hashedRefreshToken: null },
     });
     return { message: 'Logged out' };
+  }
+
+  async getAllUsers() {
+    return this.prisma.user.findMany({
+      select: { id: true, email: true, role: true, createdAt: true },
+    });
   }
 
   async refresh(userId: number, refreshToken: string) {
@@ -73,11 +83,11 @@ export class AuthService {
       throw new ForbiddenException('Access denied');
     }
 
-    return this.issueTokens(user.id, user.email);
+    return this.issueTokens(user.id, user.email, user.role);
   }
 
-  private async issueTokens(userId: number, email: string) {
-    const payload = { sub: userId, email };
+  private async issueTokens(userId: number, email: string, role: string) {
+    const payload = { sub: userId, email, role };
 
     const accessToken = await this.jwt.signAsync(payload, {
       secret: this.config.get('JWT_SECRET'),
