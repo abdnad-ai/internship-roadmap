@@ -16,7 +16,7 @@ Date: 2026-07-04
 
 ## Links and PRs
 Branch: week4-day5-auth-assessment
-Pull request: 
+Pull request: https://github.com/abdnad-ai/internship-roadmap/pull/25 
 
 ## AI Tools Used
 Claude
