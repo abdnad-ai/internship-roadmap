@@ -1,26 +1,9 @@
-# Task Manager
+# SkillForge - Task Manager API
 
-A full stack task manager built during Week 3 of the internship. Users can create, view, edit, complete, and delete tasks, with search, filtering, sorting, and pagination. It uses a NestJS and Prisma backend with a PostgreSQL database, and a Next.js frontend styled with Tailwind.
+Backend for SkillForge, a full-stack task manager with JWT authentication, refresh tokens, and role-based access control.
 
-## Features
+## Related Projects
 
-- Create, read, update, and delete tasks
-- Mark a task done or not done
-- Search tasks by words in the title or description, in any order
-- Filter by status: all, done, or to do
-- Sort by date, title, or status, ascending or descending
-- Pagination with page controls and a total count
-- Loading, empty, error, and success states on the UI
-
-## Tech Stack
-
-- Backend: NestJS, Prisma, class-validator
-- Database: PostgreSQL
-- Frontend: Next.js (App Router), Tailwind CSS
-
-## Project Structure
-
-- nestjs-projects/week-3-task-manager-api - the backend API
 - next.js-projects/week-3-task-manager-web - the frontend app
 
 ## Prerequisites
@@ -31,4 +14,40 @@ A full stack task manager built during Week 3 of the internship. Users can creat
 
 ## Environment Variables
 
-The backend needs a .env file in the week-3-task-manager-api folder with the database connection string: "postgresql://postgres:abd123@localhost:5432/task_manager?schema=public"
+Create a .env file in the week-3-task-manager-api folder with:
+
+DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/task_manager?schema=public"
+JWT_SECRET="your-access-token-secret"
+JWT_REFRESH_SECRET="your-refresh-token-secret"
+
+## Setup
+
+npm install
+npx prisma generate
+npx prisma migrate dev
+npm run start:dev
+
+Backend runs on http://localhost:3001
+
+Frontend setup instructions are in the frontend repo, runs on http://localhost:3000
+
+## Authentication System
+
+- JWT access tokens (short-lived) and refresh tokens (long-lived) with bcrypt password hashing
+- Silent refresh on the frontend keeps the session alive without re-login
+- Guards protect routes based on login status and user role
+- Roles: USER and ADMIN, with an admin panel restricted to ADMIN role only
+
+## Test Accounts
+
+| Role  | Email                  | Password    |
+|-------|------------------------|-------------|
+| Admin | superadmin@test.com    | super12345  |
+| User  | an289321@gmail.com     | abdnad23    |
+
+## Auth Endpoints
+
+- POST /auth/register - create a new user
+- POST /auth/login - returns access and refresh tokens
+- POST /auth/refresh - returns a new access token
+- GET /auth/me - returns the current logged in user
