@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SkillForge - Task Manager Web
 
-## Getting Started
+Frontend for SkillForge, a full-stack task manager with JWT authentication, protected routes, and role-based dashboard views.
 
-First, run the development server:
+## Related Projects
 
-```bash
+- nestjs-projects/week-3-task-manager-api - the backend API
+
+## Prerequisites
+
+- Node.js installed
+- Backend API running on http://localhost:3001
+
+## Environment Variables
+
+Create a .env.local file in the week-3-task-manager-web folder with:
+
+NEXT_PUBLIC_API_URL="http://localhost:3001"
+
+## Setup
+
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Frontend runs on http://localhost:3000
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Authentication System
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Login and register screens with a split-screen dark violet/indigo theme
+- Access token and refresh token stored client side, with silent refresh before token expiry
+- Protected routes redirect to login if the user is not authenticated
+- Role-based rendering, admin users see an admin panel, regular users do not
 
-## Learn More
+## Test Accounts
 
-To learn more about Next.js, take a look at the following resources:
+| Role  | Email                  | Password    |
+|-------|------------------------|-------------|
+| Admin | superadmin@test.com    | super12345  |
+| User  | an289321@gmail.com     | abdnad23    |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Pages
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- /login - login screen
+- /register - registration screen
+- /dashboard - protected dashboard, visible to all logged in users
+- /admin - protected admin panel, visible only to ADMIN role
