@@ -18,7 +18,7 @@ Date: 2026-07-06
 
 ## Links and PRs
 Branch: week5-day1-ai-service-scaffold
-Pull request: 
+Pull request: https://github.com/abdnad-ai/internship-roadmap/pull/26  
 
 ## AI Tools Used
 Claude
