@@ -51,3 +51,13 @@ Frontend setup instructions are in the frontend repo, runs on http://localhost:3
 - POST /auth/login - returns access and refresh tokens
 - POST /auth/refresh - returns a new access token
 - GET /auth/me - returns the current logged in user
+
+ 
+GEMINI_API_KEY="your-gemini-api-key"
+
+## AI Service
+
+- Uses Google Gemini (gemini-2.5-flash) to generate text responses from prompts
+- POST /ai/test - accepts a prompt string and returns the generated response, used for testing the AI service connection
+- Includes prompt length validation and empty prompt rejection before calling the API
+- A reusable prompt template builder supports variable substitution for structured prompts
