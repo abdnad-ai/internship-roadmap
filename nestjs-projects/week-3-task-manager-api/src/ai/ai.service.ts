@@ -73,4 +73,46 @@ export class AiService
       throw new InternalServerErrorException('Failed to generate streaming AI response');
     }
   } 
+
+  async generateSupportResponse(query: string): Promise<{
+    response: string;
+    category: string;
+    priority: string;
+  }> {
+    if (!query || query.trim().length === 0) {
+      throw new BadRequestException('Query cannot be empty');
+    }
+
+    if (query.length > this.MAX_INPUT_LENGTH) {
+      throw new BadRequestException(
+        `Query exceeds maximum length of ${this.MAX_INPUT_LENGTH} characters`,
+      );
+    }
+
+    const structuredPrompt = `You are a customer support agent. A user has submitted this support query:
+
+"${query}"
+
+Respond with ONLY a JSON object, no markdown formatting, no code fences, exactly in this shape:
+{
+  "response": "a helpful, friendly support response addressing the query directly, plain text, no markdown",
+  "category": "one of: Billing, Technical, Account, General",
+  "priority": "one of: Low, Medium, High"
+}`;
+
+    try {
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const result = await model.generateContent(structuredPrompt);
+      const text = result.response.text();
+      const cleaned = text.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(cleaned);
+      return {
+        response: parsed.response,
+        category: parsed.category,
+        priority: parsed.priority,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to generate support response');
+    }
+  } 
 }  
