@@ -1,4 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
+import type { Response } from 'express';
 import { IsString, IsNotEmpty } from 'class-validator';
 import { AiService } from './ai.service';
 
@@ -8,8 +9,9 @@ class TestPromptDto {
   prompt!: string;
 }
 
-@Controller('ai')
-export class AiController {
+@Controller('ai') 
+export class AiController 
+{
   constructor(private readonly aiService: AiService) {}
 
   @Post('test')
@@ -17,4 +19,21 @@ export class AiController {
     const response = await this.aiService.generateResponse(body.prompt);
     return { response };
   }
+
+  @Post('stream')
+  async streamPrompt(@Body() body: TestPromptDto, @Res() res: Response) {
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('X-Accel-Buffering', 'no');
+
+    try {
+      for await (const chunk of this.aiService.generateStreamingResponse(body.prompt)) {
+        res.write(chunk);
+      }
+    } catch (error) {
+      res.write('\n[error: stream interrupted]');
+    } finally {
+      res.end();
+    }
+  } 
 } 

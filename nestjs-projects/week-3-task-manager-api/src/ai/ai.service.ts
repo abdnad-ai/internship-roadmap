@@ -3,7 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 @Injectable()
-export class AiService {
+export class AiService 
+{
   private genAI: GoogleGenerativeAI;
   private readonly MAX_INPUT_LENGTH = 2000;
 
@@ -42,5 +43,34 @@ export class AiService {
     } catch (error) {
       throw new InternalServerErrorException('Failed to generate AI response');
     }
+
+    
   }
+
+  async *generateStreamingResponse(prompt: string): AsyncGenerator<string> {
+    if (!prompt || prompt.trim().length === 0) {
+      throw new BadRequestException('Prompt cannot be empty');
+    }
+
+    if (prompt.length > this.MAX_INPUT_LENGTH) {
+      throw new BadRequestException(
+        `Prompt exceeds maximum length of ${this.MAX_INPUT_LENGTH} characters`,
+      );
+    }
+
+    try {
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const styledPrompt = `Respond in plain conversational text. Avoid markdown formatting like asterisks for bold or italics, and avoid em dashes, use plain sentences and commas instead.\n\n${prompt}`;
+      const result = await model.generateContentStream(styledPrompt);
+
+      for await (const chunk of result.stream) { 
+        const text = chunk.text();
+        if (text) {
+          yield text;
+        }
+      }
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to generate streaming AI response');
+    }
+  } 
 }  
