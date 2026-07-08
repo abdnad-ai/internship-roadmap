@@ -16,7 +16,7 @@ Date: 2026-07-08
 
 ## Links and PRs
 Branch: week5-day2-streaming-chat-ui
-Pull request: 
+Pull request: https://github.com/abdnad-ai/internship-roadmap/pull/28 
 
 ## AI Tools Used
 Claude
