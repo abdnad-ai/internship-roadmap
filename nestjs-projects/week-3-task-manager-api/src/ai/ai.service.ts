@@ -111,8 +111,13 @@ Respond with ONLY a JSON object, no markdown formatting, no code fences, exactly
         category: parsed.category,
         priority: parsed.priority,
       };
-    } catch (error) {
+    } catch (error:any) {
+      if (error?.status === 429) {
+        throw new InternalServerErrorException(
+          'The AI service is temporarily rate limited, please wait a moment and try again.',
+        );
+      }
       throw new InternalServerErrorException('Failed to generate support response');
-    }
+    }  
   } 
 }  
