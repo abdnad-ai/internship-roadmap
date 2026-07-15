@@ -36,7 +36,7 @@ export class AiService
     }
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
       const result = await model.generateContent(prompt);
       const response = result.response;
       return response.text();
@@ -59,7 +59,7 @@ export class AiService
     }
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
       const styledPrompt = `Respond in plain conversational text. Avoid markdown formatting like asterisks for bold or italics, and avoid em dashes, use plain sentences and commas instead.\n\n${prompt}`;
       const result = await model.generateContentStream(styledPrompt);
 
@@ -95,13 +95,13 @@ export class AiService
 
 Respond with ONLY a JSON object, no markdown formatting, no code fences, exactly in this shape:
 {
-  "response": "a helpful, friendly support response addressing the query directly, plain text, no markdown",
+  "response": "a helpful, friendly support response addressing the query directly, plain conversational sentences, no asterisks for bold or italics, no em dashes, use commas and periods instead",
   "category": "one of: Billing, Technical, Account, General",
   "priority": "one of: Low, Medium, High"
-}`;
+}`; 
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
       const result = await model.generateContent(structuredPrompt);
       const text = result.response.text();
       const cleaned = text.replace(/```json|```/g, '').trim();
@@ -111,7 +111,8 @@ Respond with ONLY a JSON object, no markdown formatting, no code fences, exactly
         category: parsed.category,
         priority: parsed.priority,
       };
-    } catch (error:any) {
+    } catch (error: any) {
+      console.error('Support agent error:', error);
       if (error?.status === 429) {
         throw new InternalServerErrorException(
           'The AI service is temporarily rate limited, please wait a moment and try again.',
