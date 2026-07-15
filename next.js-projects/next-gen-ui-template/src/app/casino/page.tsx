@@ -4,18 +4,31 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import CasinoTopBar from "@/components/CasinoTopBar";
+import CasinoSportsbook from "@/components/CasinoSportsbook";
+import CasinoStatsRow from "@/components/CasinoStatsRow";
+import CasinoCategoryChart from "@/components/CasinoCategoryChart";
+import CasinoActivityChart from "@/components/CasinoActivityChart";
+import CasinoWelcomeCard from "@/components/CasinoWelcomeCard";
+
 
 const ICON_BASE = "https://icons.iconarchive.com/icons/microsoft/fluentui-emoji-3d/128";
 
 const sheen = "linear-gradient(135deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 40%)";
 
+const trustBadges = [
+  { label: "Licensed & Secure", icon: "Shield" },
+  { label: "SSL Encrypted", icon: "Locked" },
+  { label: "Fair Play Verified", icon: "Check-Mark-Button" },
+  { label: "24/7 Support", icon: "Headphone" },
+];
+ 
 const wins = [
-  { name: "George", game: "Golden Reels", amount: "$8,763.78", color: "#d9a441" },
-  { name: "Marcus", game: "Emerald Fortune", amount: "$5,204.12", color: "#3d9e6e" },
-  { name: "Jerry Maguire", game: "Velvet Blackjack", amount: "$3,190.50", color: "#c9457e" },
-  { name: "Michael Scott", game: "Copper Roulette", amount: "$2,880.00", color: "#3d9e9e" },
-]; 
-  
+  { name: "Tom***rrc", game: "Golden Reels", amount: "$8,763.78", color: "#d9a441" },
+  { name: "Marcus R.", game: "Emerald Fortune", amount: "$5,204.12", color: "#3d9e6e" },
+  { name: "Alex***rrc", game: "Velvet Blackjack", amount: "$3,190.50", color: "#c9457e" },
+  { name: "Bao***rrc", game: "Copper Roulette", amount: "$2,880.00", color: "#3d9e9e" },
+];
+
 const slots = [
   { title: "Golden Reels", provider: "Aurum Studios", from: "#8a6516", to: "#c99a33", icon: "Coin" },
   { title: "Emerald Fortune", provider: "Nightloom Games", from: "#0f5132", to: "#1e8449", icon: "Gem-Stone" },
@@ -51,27 +64,37 @@ export default function CasinoLobbyPage() {
       <CasinoTopBar onSearchChange={setSearch} activeTab={tab} onTabChange={setTab} />
 
       {tab === "sport" ? (
-        <div className="relative z-10 flex flex-col items-center justify-center py-32 text-center">
-          <h1 style={{ color: "var(--casino-text)" }} className="text-4xl font-black mb-3">
-            Sportsbook coming soon
-          </h1>
-          <p style={{ color: "var(--casino-muted)" }} className="text-sm max-w-sm">
-            We're building out live odds and match betting. Check back soon.
-          </p>
-        </div>
+        <CasinoSportsbook />
       ) : (
+
         <>
-          <div className="relative z-10 mb-10">
-            <h1
-              style={{ color: "var(--casino-text)" }}
-              className="text-[96px] leading-[0.85] font-black tracking-tighter"
-            >
-              PLAY
-              <span style={{ color: "var(--casino-accent)" }}>.</span>
-            </h1>
-            <p style={{ color: "var(--casino-muted)" }} className="text-sm mt-3 max-w-sm">
-              Curated games, clear odds, no clutter. Everything you need, nothing you don't.
-            </p>
+        <div className="relative z-10 mb-6 flex items-start justify-between gap-6">
+            <div>
+              <h1
+                style={{ color: "var(--casino-text)" }}
+                className="text-7xl leading-[0.9] font-black tracking-tighter"
+              >
+                PLAY
+                <span style={{ color: "var(--casino-accent)" }}>.</span>
+              </h1>
+              <p style={{ color: "var(--casino-muted)" }} className="text-sm mt-2 max-w-sm">
+                Curated games, clear odds, no clutter. Everything you need, nothing you don't.
+              </p>
+            </div>
+            <div className="w-72 flex-shrink-0">
+              <CasinoWelcomeCard />
+            </div>
+          </div> 
+
+          <div className="relative z-10 flex items-center gap-6 mb-8 flex-wrap">
+            {trustBadges.map((badge) => (
+              <div key={badge.label} className="flex items-center gap-2">
+                <Image src={`${ICON_BASE}/${badge.icon}-3d-icon.png`} alt="" width={20} height={20} unoptimized />
+                <span style={{ color: "var(--casino-muted)" }} className="text-xs font-medium"> 
+                  {badge.label}
+                </span>
+              </div>
+            ))}
           </div>
 
           <div
@@ -88,10 +111,10 @@ export default function CasinoLobbyPage() {
                 gridRow: "span 2",
                 background: `${sheen}, linear-gradient(160deg, #1e8449 0%, #0f5132 100%)`,
                 boxShadow: "0 0 30px -10px #1e8449",
-              }}
+              }} 
               className="rounded-xl p-6 flex flex-col justify-between cursor-pointer"
             >
-              <Image src={`${ICON_BASE}/Money-Bag-3d-icon.png`} alt="" width={56} height={56} unoptimized />
+              <Image src={`${ICON_BASE}/Money-Bag-3d-icon.png`} alt="" width={130} height={130} unoptimized />
               <div>
                 <p style={{ color: "#f5f3ee" }} className="text-2xl font-black"> 
                   Deposit
@@ -114,7 +137,7 @@ export default function CasinoLobbyPage() {
               }}
               className="rounded-xl p-6 flex flex-col justify-between h-32 cursor-pointer"
             >
-              <Image src={`${ICON_BASE}/Slot-Machine-3d-icon.png`} alt="" width={40} height={40} unoptimized />
+              <Image src={`${ICON_BASE}/Slot-Machine-3d-icon.png`} alt="" width={55} height={55} unoptimized />
               <p style={{ color: "#f5f3ee" }} className="text-base font-bold">
                 Wheel
               </p>
@@ -132,7 +155,7 @@ export default function CasinoLobbyPage() {
               }}
               className="rounded-xl p-6 flex flex-col justify-between h-32 cursor-pointer"
             >
-              <Image src="/icons/gift.png" alt="" width={48} height={48} />
+              <Image src="/icons/gift.png" alt="" width={60} height={60} />
               <p style={{ color: "#f5f3ee" }} className="text-base font-bold">
                 Rewards
               </p>
@@ -150,7 +173,7 @@ export default function CasinoLobbyPage() {
               }}
               className="rounded-xl p-6 flex flex-col justify-between h-32 cursor-pointer"
             >
-              <Image src={`${ICON_BASE}/Spade-Suit-3d-icon.png`} alt="" width={40} height={40} unoptimized />
+              <Image src={`${ICON_BASE}/Spade-Suit-3d-icon.png`} alt="" width={60} height={60} unoptimized />
               <p style={{ color: "#f5f3ee" }} className="text-base font-bold">
                 Casino
               </p>
@@ -168,7 +191,7 @@ export default function CasinoLobbyPage() {
               }}
               className="rounded-xl p-6 flex flex-col justify-between h-32 cursor-pointer"
             >
-              <Image src={`${ICON_BASE}/Bomb-3d-icon.png`} alt="" width={40} height={40} unoptimized />
+              <Image src={`${ICON_BASE}/Bomb-3d-icon.png`} alt="" width={60} height={60} unoptimized />
               <p style={{ color: "#f5f3ee" }} className="text-base font-bold">
                 Mines
               </p>
@@ -183,7 +206,7 @@ export default function CasinoLobbyPage() {
               }}
               className="rounded-xl p-6 flex items-center gap-4"
             >
-              <Image src={`${ICON_BASE}/Rocket-3d-icon.png`} alt="" width={48} height={48} unoptimized />
+              <Image src={`${ICON_BASE}/Rocket-3d-icon.png`} alt="" width={60} height={60} unoptimized />
               <div>
                 <p style={{ color: "#5fd9d9" }} className="text-xs font-bold uppercase tracking-wide">
                   New game
@@ -199,8 +222,8 @@ export default function CasinoLobbyPage() {
                 border: "1px solid #c99a3355",
               }}
               className="rounded-xl p-6 flex items-center gap-4"
-            >
-              <Image src="/icons/trophy.png" alt="" width={56} height={56} />
+            > 
+              <Image src="/icons/trophy.png" alt="" width={60} height={60} />
               <div>
                 <p style={{ color: "#e8c56b" }} className="text-xs font-bold uppercase tracking-wide">
                   Free rewards
@@ -212,9 +235,19 @@ export default function CasinoLobbyPage() {
             </div>
           </div>
 
+           <div className="relative z-10 mb-10">
+            <CasinoStatsRow />
+          </div> 
+
+          <div className="relative z-10 grid grid-cols-2 gap-4 mb-10">
+            <CasinoCategoryChart />
+            <CasinoActivityChart />
+          </div>
+
           <h2 style={{ color: "var(--casino-text)" }} className="relative z-10 text-base font-bold mb-4">
             Top wins
           </h2>
+
           <div className="relative z-10 grid grid-cols-4 gap-4 mb-10">
             {wins.map((win, i) => (
               <motion.div
@@ -265,7 +298,7 @@ export default function CasinoLobbyPage() {
                   }}
                   className="rounded-lg h-40 flex flex-col items-center justify-center gap-2 cursor-pointer"
                 >
-                  <Image src={`${ICON_BASE}/${game.icon}-3d-icon.png`} alt="" width={40} height={40} unoptimized />
+                  <Image src={`${ICON_BASE}/${game.icon}-3d-icon.png`} alt="" width={60} height={60} unoptimized />
                   <p style={{ color: "#f5f3ee" }} className="text-xs font-bold text-center px-2">
                     {game.title}
                   </p>
@@ -277,4 +310,4 @@ export default function CasinoLobbyPage() {
       )}
     </main>
   );
-}  
+}     

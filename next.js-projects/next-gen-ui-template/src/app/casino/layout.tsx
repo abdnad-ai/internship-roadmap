@@ -1,4 +1,5 @@
-import CasinoSidebar from "@/components/CasinoSidebar";
+ import CasinoSidebar from "@/components/CasinoSidebar";
+import CasinoLiveChat from "@/components/CasinoLiveChat";
 
 export default function CasinoLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -14,8 +15,10 @@ export default function CasinoLayout({ children }: { children: React.ReactNode }
         minHeight: "100vh",
       }}
     >
-      <CasinoSidebar />
+     <CasinoSidebar />
+      <CasinoLiveChat />
       <div className="ml-64">{children}</div>
     </div>
   );
-} 
+}
+ 
