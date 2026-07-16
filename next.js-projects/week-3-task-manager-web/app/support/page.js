@@ -3,6 +3,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import AnimatedWaveBg from "../components/AnimatedWaveBg";
 import { motion, AnimatePresence } from "framer-motion";
+import { apiFetch } from "../lib/api";
+import Link from "next/link";
+
 
 const priorityColors = {
   Low: "#3ddc7a",
@@ -48,11 +51,10 @@ export default function SupportPage() {
     }, 2500);
 
     try {
-      const res = await fetch("http://localhost:3001/ai/support", {
+      const res = await apiFetch("/ai/support", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: query }),
-      });
+      }); 
 
       if (!res.ok) {
         throw new Error("Request failed");
@@ -83,7 +85,11 @@ export default function SupportPage() {
         </div>
 
         <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
-              Every question, answered instantly        </h1>
+              Every question, answered instantly  
+                    </h1>
+        <Link href="/support/history" className="text-white/50 text-xs hover:text-white/80 transition-colors mb-6">
+          View past conversations
+        </Link> 
         <p className="text-white/60 text-sm md:text-base mb-10 max-w-md">
           Describe what's going on, and get a response with automatic category and priority tagging in seconds.
         </p>
