@@ -1,7 +1,9 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+ import { Body, Controller, Post, Get, Res, UseGuards } from '@nestjs/common';
 import type { Response } from 'express';
 import { IsString, IsNotEmpty } from 'class-validator';
 import { AiService } from './ai.service';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 
 class TestPromptDto {
   @IsString()
@@ -9,9 +11,8 @@ class TestPromptDto {
   prompt!: string;
 }
 
-@Controller('ai') 
-export class AiController 
-{
+@Controller('ai')
+export class AiController {
   constructor(private readonly aiService: AiService) {}
 
   @Post('test')
@@ -35,10 +36,17 @@ export class AiController
     } finally {
       res.end();
     }
-  } 
+  }
 
+  @UseGuards(JwtAuthGuard)
   @Post('support')
-  async supportQuery(@Body() body: TestPromptDto) {
-    return this.aiService.generateSupportResponse(body.prompt);
-  } 
+  async supportQuery(@Body() body: TestPromptDto, @CurrentUser() user: { id: number }) {
+    return this.aiService.generateSupportResponse(body.prompt, user.id);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('support/history')
+  async supportHistory(@CurrentUser() user: { id: number }) {
+    return this.aiService.getSupportHistory(user.id);
+  }
 } 

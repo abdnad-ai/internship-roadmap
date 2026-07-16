@@ -1,7 +1,17 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import HeroScene from "../components/HeroScene";
+import { useState, useEffect, useRef, useCallback } from "react";
+import AnimatedWaveBg from "../components/AnimatedWaveBg";
+import { motion, AnimatePresence } from "framer-motion";
+import { apiFetch } from "../lib/api";
+import Link from "next/link";
+
+
+const priorityColors = {
+  Low: "#3ddc7a",
+  Medium: "#ffc93d",
+  High: "#ff4d8d",
+};
 
 const loadingMessages = [
   "Reading your message...",
@@ -14,16 +24,25 @@ const loadingMessages = [
 export default function SupportPage() {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState(null);
- const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
   const intervalRef = useRef(null);
+  const textareaRef = useRef(null);
+
+  const adjustHeight = useCallback(() => {
+    const el = textareaRef.current;
+    if (el) {
+      el.style.height = "auto";
+      el.style.height = Math.min(el.scrollHeight, 200) + "px";
+    }
+  }, []);
 
   const handleSubmit = async () => {
     if (!query.trim() || loading) return;
 
     setLoading(true);
-    setError(null); 
+    setError(null);
     setResult(null);
     setLoadingMessageIndex(0);
 
@@ -32,11 +51,10 @@ export default function SupportPage() {
     }, 2500);
 
     try {
-      const res = await fetch("http://localhost:3001/ai/support", {
+      const res = await apiFetch("/ai/support", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt: query }),
-      });
+      }); 
 
       if (!res.ok) {
         throw new Error("Request failed");
@@ -57,94 +75,103 @@ export default function SupportPage() {
   }, []);
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <div className="absolute top-[10%] right-[3%] w-[420px] h-[420px] opacity-25 pointer-events-none">
-        <HeroScene />
-      </div>
+    <div className="relative min-h-screen flex flex-col items-center justify-center px-6 py-20 overflow-hidden">
+      <AnimatedWaveBg />
 
-      <header
-        style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
-        className="relative z-10 px-8 py-5 flex items-center gap-3"
-      >
-        <div
-          style={{ background: "var(--chat-maroon)" }}
-          className="w-8 h-8 rounded-md flex items-center justify-center"
-        >
-          <span style={{ color: "var(--chat-text)", fontFamily: "var(--chat-font-display)" }} className="text-sm font-bold">
-            S
-          </span>
+      <div className="relative z-10 flex flex-col items-center text-center max-w-2xl w-full">
+        <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/10 mb-6">
+          <span className="w-1.5 h-1.5 rounded-full bg-pink-400" />
+          <span className="text-xs font-medium text-white/80">AI-powered support</span>
         </div>
-        <h1
-          style={{ fontFamily: "var(--chat-font-display)", color: "var(--chat-text)" }}
-          className="text-2xl font-bold tracking-tight"
-        >
-          Support <span style={{ color: "var(--chat-maroon-bright)" }}>Agent</span>
-        </h1>
-      </header>
 
-      <main className="relative z-10 max-w-2xl mx-auto px-8 py-10">
-        <p style={{ color: "var(--chat-muted)", fontFamily: "var(--chat-font-body)" }} className="text-sm mb-6">
-          Describe your issue and get an instant response, with automatic category and priority tagging.
+        <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
+              Every question, answered instantly  
+                    </h1>
+        <Link href="/support/history" className="text-white/50 text-xs hover:text-white/80 transition-colors mb-6">
+          View past conversations
+        </Link> 
+        <p className="text-white/60 text-sm md:text-base mb-10 max-w-md">
+          Describe what's going on, and get a response with automatic category and priority tagging in seconds.
         </p>
 
-        <textarea
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Describe your issue..."
-          rows={4}
-          style={{
-            background: "var(--chat-surface)",
-            color: "var(--chat-text)",
-            border: "1px solid rgba(255,255,255,0.06)",
-            fontFamily: "var(--chat-font-body)",
-          }}
-          className="w-full px-4 py-3 rounded-lg text-base focus:outline-none resize-none"
-        />
-
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          style={{ background: "var(--chat-green)", color: "white", fontFamily: "var(--chat-font-body)" }}
-          className="mt-4 px-6 py-3 rounded-lg text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
-        >
-          {loading ? "Getting response..." : "Submit"}
-        </button>
-
-        {error && (
-          <p style={{ color: "var(--chat-maroon-bright)", fontFamily: "var(--chat-font-body)" }} className="text-sm mt-4">
-            {error}
-          </p>
-        )}
-
-        {result && (
-          <div
-            style={{
-              background: "var(--chat-surface)",
-              border: "1px solid rgba(255,255,255,0.06)",
-              fontFamily: "var(--chat-font-body)",
+        <div className="w-full bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-2 flex items-center gap-2">
+          <textarea
+            ref={textareaRef}
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              adjustHeight();
             }}
-            className="mt-8 rounded-lg p-6"
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSubmit();
+              }
+            }}
+            placeholder="Describe your issue..."
+            rows={1}
+            className="flex-1 bg-transparent text-white placeholder-white/40 text-sm px-4 py-3 focus:outline-none resize-none overflow-hidden"
+          />
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="flex-shrink-0 w-11 h-11 flex items-center justify-center rounded-xl bg-white hover:bg-white/90 transition-colors disabled:opacity-70"
           >
-            <div className="flex items-center gap-2 mb-4">
+            {loading ? (
               <span
-                style={{ background: "var(--chat-green)", color: "white" }}
-                className="text-xs font-semibold px-2.5 py-1 rounded-full"
-              >
-                {result.category}
-              </span>
-              <span
-                style={{ background: priorityColors[result.priority] || "var(--chat-muted)", color: "white" }}
-                className="text-xs font-semibold px-2.5 py-1 rounded-full"
-              >
-                {result.priority} priority
-              </span>
-            </div>
-            <p style={{ color: "var(--chat-text)" }} className="text-base leading-relaxed whitespace-pre-wrap">
-              {result.response}
-            </p>
-          </div>
+                className="w-4 h-4 rounded-full border-2 border-black/20 border-t-black animate-spin"
+              />
+            ) : (
+              <span className="text-black text-sm font-semibold">Go</span>
+            )}
+          </button>
+        </div>
+
+        {loading && (
+          <motion.p
+            key={loadingMessageIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="text-white/50 text-xs mt-3"
+          >
+            {loadingMessages[loadingMessageIndex]}
+          </motion.p>
         )}
-      </main>
+
+        {error && <p className="text-pink-400 text-sm mt-4">{error}</p>}
+
+        <AnimatePresence mode="wait">
+          {result && (
+            <motion.div
+              key={result.response}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="w-full mt-8 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-left"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <span
+                  style={{ background: "rgba(255,255,255,0.12)" }}
+                  className="text-xs font-semibold px-2.5 py-1 rounded-full text-white"
+                >
+                  {result.category}
+                </span>
+                <span
+                  style={{ background: priorityColors[result.priority] || "#666" }}
+                  className="text-xs font-semibold px-2.5 py-1 rounded-full text-black"
+                >
+                  {result.priority} priority
+                </span>
+              </div>
+              <p className="text-white/90 text-base leading-relaxed whitespace-pre-wrap">
+                {result.response}
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
-}  
+} 

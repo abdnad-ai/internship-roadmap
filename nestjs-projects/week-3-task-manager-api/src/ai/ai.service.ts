@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class AiService 
@@ -8,7 +9,10 @@ export class AiService
   private genAI: GoogleGenerativeAI;
   private readonly MAX_INPUT_LENGTH = 2000;
 
-  constructor(private config: ConfigService) {
+  constructor(
+    private config: ConfigService,
+    private prisma: PrismaService,
+  ) {
     const apiKey = this.config.get<string>('GEMINI_API_KEY');
     if (!apiKey) {
       throw new Error('GEMINI_API_KEY is not set in environment variables');
@@ -74,7 +78,7 @@ export class AiService
     }
   } 
 
-  async generateSupportResponse(query: string): Promise<{
+  async generateSupportResponse(query: string, userId: number): Promise<{
     response: string;
     category: string;
     priority: string;
@@ -106,6 +110,16 @@ Respond with ONLY a JSON object, no markdown formatting, no code fences, exactly
       const text = result.response.text();
       const cleaned = text.replace(/```json|```/g, '').trim();
       const parsed = JSON.parse(cleaned);
+      await this.prisma.supportConversation.create({
+        data: {
+          query,
+          response: parsed.response,
+          category: parsed.category,
+          priority: parsed.priority,
+          userId,
+        },
+      });  
+
       return {
         response: parsed.response,
         category: parsed.category,
@@ -119,6 +133,13 @@ Respond with ONLY a JSON object, no markdown formatting, no code fences, exactly
         );
       }
       throw new InternalServerErrorException('Failed to generate support response');
-    }  
+    }
   } 
+
+  async getSupportHistory(userId: number) {
+    return this.prisma.supportConversation.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
 }  
