@@ -39,7 +39,12 @@ export default function SupportPage() {
   }, []);
 
   const handleSubmit = async () => {
-    if (!query.trim() || loading) return;
+    if (loading) return;
+
+    if (!query.trim()) {
+      setError("Please enter a question first.");
+      return;
+    } 
 
     setLoading(true);
     setError(null);

@@ -1,6 +1,6 @@
-# SkillForge - Task Manager Web
+ # SkillForge - Task Manager Web
 
-Frontend for SkillForge, a full-stack task manager with JWT authentication, protected routes, and role-based dashboard views.
+Frontend for SkillForge, a full-stack task manager with JWT authentication, protected routes, role-based dashboard views, and AI features.
 
 ## Related Projects
 
@@ -44,3 +44,10 @@ Frontend runs on http://localhost:3000
 - /register - registration screen
 - /dashboard - protected dashboard, visible to all logged in users
 - /admin - protected admin panel, visible only to ADMIN role
+
+## AI Features
+
+- /chat - streaming AI chat interface, connects to the backend's streaming endpoint and renders responses as they arrive
+- /support - AI Support Agent, submit a question and get a response with an automatic category and priority tag
+- /support/history - JWT protected, shows the current user's past support conversations, most recent first
+- The support pages require being logged in, requests are sent through the app's existing authenticated apiFetch helper 
