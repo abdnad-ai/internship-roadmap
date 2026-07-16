@@ -36,7 +36,7 @@ export class AiService
     }
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
       const result = await model.generateContent(prompt);
       const response = result.response;
       return response.text();
@@ -59,7 +59,7 @@ export class AiService
     }
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
       const styledPrompt = `Respond in plain conversational text. Avoid markdown formatting like asterisks for bold or italics, and avoid em dashes, use plain sentences and commas instead.\n\n${prompt}`;
       const result = await model.generateContentStream(styledPrompt);
 
@@ -72,5 +72,53 @@ export class AiService
     } catch (error) {
       throw new InternalServerErrorException('Failed to generate streaming AI response');
     }
+  } 
+
+  async generateSupportResponse(query: string): Promise<{
+    response: string;
+    category: string;
+    priority: string;
+  }> {
+    if (!query || query.trim().length === 0) {
+      throw new BadRequestException('Query cannot be empty');
+    }
+
+    if (query.length > this.MAX_INPUT_LENGTH) {
+      throw new BadRequestException(
+        `Query exceeds maximum length of ${this.MAX_INPUT_LENGTH} characters`,
+      );
+    }
+
+    const structuredPrompt = `You are a customer support agent. A user has submitted this support query:
+
+"${query}"
+
+Respond with ONLY a JSON object, no markdown formatting, no code fences, exactly in this shape:
+{
+  "response": "a helpful, friendly support response addressing the query directly, plain conversational sentences, no asterisks for bold or italics, no em dashes, use commas and periods instead",
+  "category": "one of: Billing, Technical, Account, General",
+  "priority": "one of: Low, Medium, High"
+}`; 
+
+    try {
+      const model = this.genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
+      const result = await model.generateContent(structuredPrompt);
+      const text = result.response.text();
+      const cleaned = text.replace(/```json|```/g, '').trim();
+      const parsed = JSON.parse(cleaned);
+      return {
+        response: parsed.response,
+        category: parsed.category,
+        priority: parsed.priority,
+      };
+    } catch (error: any) {
+      console.error('Support agent error:', error);
+      if (error?.status === 429) {
+        throw new InternalServerErrorException(
+          'The AI service is temporarily rate limited, please wait a moment and try again.',
+        );
+      }
+      throw new InternalServerErrorException('Failed to generate support response');
+    }  
   } 
 }  

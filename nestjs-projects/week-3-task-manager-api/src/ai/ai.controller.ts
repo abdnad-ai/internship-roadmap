@@ -36,4 +36,9 @@ export class AiController
       res.end();
     }
   } 
+
+  @Post('support')
+  async supportQuery(@Body() body: TestPromptDto) {
+    return this.aiService.generateSupportResponse(body.prompt);
+  } 
 } 
