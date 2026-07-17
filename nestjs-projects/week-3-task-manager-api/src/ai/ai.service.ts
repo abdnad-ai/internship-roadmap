@@ -8,6 +8,8 @@ export class AiService
 {
   private genAI: GoogleGenerativeAI;
   private readonly MAX_INPUT_LENGTH = 2000;
+  private readonly MODEL_NAME = 'gemini-3.5-flash';
+ 
 
   constructor(
     private config: ConfigService,
@@ -40,7 +42,7 @@ export class AiService
     }
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
+      const model = this.genAI.getGenerativeModel({ model: this.MODEL_NAME });
       const result = await model.generateContent(prompt);
       const response = result.response;
       return response.text();
@@ -63,7 +65,7 @@ export class AiService
     }
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
+      const model = this.genAI.getGenerativeModel({ model: this.MODEL_NAME });
       const styledPrompt = `Respond in plain conversational text. Avoid markdown formatting like asterisks for bold or italics, and avoid em dashes, use plain sentences and commas instead.\n\n${prompt}`;
       const result = await model.generateContentStream(styledPrompt);
 
@@ -105,7 +107,7 @@ Respond with ONLY a JSON object, no markdown formatting, no code fences, exactly
 }`; 
 
     try {
-      const model = this.genAI.getGenerativeModel({ model: 'gemini-3.5-flash' });
+      const model = this.genAI.getGenerativeModel({ model: this.MODEL_NAME });
       const result = await model.generateContent(structuredPrompt);
       const text = result.response.text();
       const cleaned = text.replace(/```json|```/g, '').trim();
