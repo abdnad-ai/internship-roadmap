@@ -11,16 +11,16 @@
 | 5 | Same hardcoded model name, third occurrence | ai.service.ts:108 | Medium | Fixed |
 | 6 | bcrypt salt rounds (10) hardcoded instead of a named constant | auth.service.ts:32 | Low | Fixed |
 | 7 | Same hardcoded salt rounds, second occurrence | auth.service.ts:102 | Low | Fixed |
-| 8 | `API_BASE` constant redeclared locally instead of importing the existing one from lib/api.js | app/login/page.js:9 | Medium | Acknowledged |
-| 9 | Same redeclared `API_BASE`, second occurrence | app/register/page.js:9 | Medium | Acknowledged |
-| 10 | Separate `API_URL` constant with a different name and the path baked in, inconsistent with the rest of the app | app/tasks/page.js:5 | Medium | Acknowledged |
-| 11 | Streaming fetch call hardcodes the full URL inline with no constant at all | app/chat/page.js:31 | Medium | Acknowledged |
+| 8 | `API_BASE` constant redeclared locally instead of importing the existing one from lib/api.js | app/login/page.js:9 | Medium | Fixed (Day 5) |
+| 9 | Same redeclared `API_BASE`, second occurrence | app/register/page.js:9 | Medium | Fixed (Day 5) |
+| 10 | Separate `API_URL` constant with a different name and the path baked in, inconsistent with the rest of the app | app/tasks/page.js:5 | Medium | Fixed (Day 5) |
+| 11 | Streaming fetch call hardcodes the full URL inline with no constant at all | app/chat/page.js:31 | Medium | Fixed (Day 5) |
 | 12 | Login and Register pages duplicate nearly identical state, fetch, and error handling logic | app/login/page.js, app/register/page.js | Medium | Acknowledged |
 | 13 | Chat message list uses array index as the React key, fragile if messages are ever reordered or filtered | app/chat/page.js:101 | Low | Acknowledged |
 | 14 | Dashboard's useEffect omits `loadUser` and `router` from its dependency array | app/dashboard/page.js:14-19 | Medium | Acknowledged |
-| 15 | `apiFetch` has no locking on token refresh, concurrent 401s can trigger multiple simultaneous refresh calls and race each other | app/lib/api.js | High | Acknowledged |
+| 15 | `apiFetch` has no locking on token refresh, concurrent 401s can trigger multiple simultaneous refresh calls and race each other | app/lib/api.js | High | Fixed (Day 5) |
 | 16 | Root route (`/`) still shows the unedited default Next.js starter page, dead content in a real product | app/page.js | Low | Acknowledged |
-| 17 | Register form has no password confirmation field, a typoed password can't be caught before submitting | app/register/page.js | Medium | Acknowledged |
+| 17 | Register form has no password confirmation field, a typoed password can't be caught before submitting | app/register/page.js | Medium | Fixed (Day 5) | 
 | 18 | Password policy only enforces a minimum length of 6, no complexity requirement | register.dto.ts:8 | Low | Acknowledged |
 | 19 | Task list pagination previously had no upper bound on `limit` (already fixed on Day 3, listed here for completeness of the full review) | tasks.service.ts | High | Fixed (Day 3) |
 | 20 | No rate limiting existed anywhere in the API before Day 3 (already fixed on Day 3, listed here for completeness) | app.module.ts | High | Fixed (Day 3) |
