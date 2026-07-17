@@ -3,28 +3,32 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { saveTokens } from "../lib/api";
+import { saveTokens, apiFetch } from "../lib/api";
 import AuthSidePanel from "../components/AuthSidePanel";
-
-const API_BASE = "http://localhost:3001";
-
+ 
 export default function RegisterPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+ const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
+  async function handleSubmit(e) { 
+   e.preventDefault();
+   setError("");
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+
+    setLoading(true); 
+
     try {
-      const res = await fetch(`${API_BASE}/auth/register`, {
+      const res = await apiFetch("/auth/register", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-      });
+      }); 
       const data = await res.json();
       if (!res.ok) {
         throw new Error(
@@ -76,7 +80,17 @@ export default function RegisterPage() {
                 className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/30"
               />
             </div>
-            <button
+            <div>
+              <label className="mb-1.5 block text-sm text-slate-300">Confirm password</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Re-enter your password"
+                className="w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-white outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/30"
+              />
+            </div>
+            <button 
               onClick={handleSubmit}
               disabled={loading}
               className="w-full rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-4 py-3 font-semibold text-white transition hover:opacity-90 active:scale-[0.99] disabled:opacity-60"
