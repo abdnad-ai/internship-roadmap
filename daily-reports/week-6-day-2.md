@@ -14,7 +14,7 @@ Date: 2026-07-17
 
 ## Links and PRs
 Branch: week-6-day-2-frontend-tests
-Pull request: 
+Pull request: https://github.com/abdnad-ai/internship-roadmap/pull/33 
 
 ## AI Tools Used
 Claude
