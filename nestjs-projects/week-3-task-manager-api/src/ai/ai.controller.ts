@@ -35,7 +35,7 @@ export class AiController {
       res.write('\n[error: stream interrupted]');
     } finally {
       res.end();
-    }
+    }  
   }
 
   @UseGuards(JwtAuthGuard)
