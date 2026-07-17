@@ -13,6 +13,8 @@ import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
+    private readonly SALT_ROUNDS = 10;
+
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
@@ -29,7 +31,7 @@ export class AuthService {
       throw new ConflictException('Email already in use');
     }
 
-    const hashedPassword = await bcrypt.hash(dto.password, 10);
+    const hashedPassword = await bcrypt.hash(dto.password, this.SALT_ROUNDS);
     const user = await this.prisma.user.create({
       data: { email: dto.email, password: hashedPassword },
 
@@ -99,10 +101,10 @@ export class AuthService {
       expiresIn: this.config.get('JWT_REFRESH_EXPIRES'),
     });
 
-    const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+    const hashedRefreshToken = await bcrypt.hash(refreshToken, this.SALT_ROUNDS);
     await this.prisma.user.update({
       where: { id: userId },
-      data: { hashedRefreshToken },
+      data: { hashedRefreshToken }, 
     });
 
     return { access_token: accessToken, refresh_token: refreshToken };
