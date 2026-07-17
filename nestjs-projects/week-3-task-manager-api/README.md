@@ -62,3 +62,9 @@ Frontend setup instructions are in the frontend repo, runs on http://localhost:3
 - GET /ai/support/history - JWT protected, returns the current user's past support conversations, most recent first
 - Includes prompt length validation and empty prompt rejection before calling the API
 - Prompt templates are documented in prompts/ai-service/prompt-documentation.md
+## Testing
+
+- npm test - runs the full Jest test suite
+- npm test -- <filename> - runs a single test file, for example npm test -- tasks.service.spec.ts
+- Tests cover the Tasks service (CRUD and not-found cases) and the AI module (validation, structured support responses, and history), using mocked Prisma and mocked Gemini calls so no real database or API calls happen during tests
+
