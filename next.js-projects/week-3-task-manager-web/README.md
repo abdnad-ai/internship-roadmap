@@ -51,3 +51,10 @@ Frontend runs on http://localhost:3000
 - /support - AI Support Agent, submit a question and get a response with an automatic category and priority tag
 - /support/history - JWT protected, shows the current user's past support conversations, most recent first
 - The support pages require being logged in, requests are sent through the app's existing authenticated apiFetch helper 
+## Testing
+
+- npm test - runs the full Jest test suite (React Testing Library)
+- npm test -- <filename> - runs a single test file, for example npm test -- login/page.test.js
+- Covers the login form (rendering, input handling, loading state, error handling) and the AnimatedWaveBg component
+- Components that depend on WebGL (HeroScene) can't be meaningfully tested with jsdom, see docs/manual-test-cases.md for documented manual test steps instead
+
