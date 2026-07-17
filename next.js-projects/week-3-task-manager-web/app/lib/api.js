@@ -42,21 +42,32 @@ export async function apiFetch(path, options = {}) {
   return res;
 }
 
+ let refreshPromise = null;
+
 async function tryRefresh() {
-  const refreshToken = getRefreshToken();
-  if (!refreshToken) return false;
-
-  const res = await fetch(`${API_BASE}/auth/refresh`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${refreshToken}` },
-  });
-
-  if (!res.ok) {
-    clearTokens();
-    return false;
+  if (refreshPromise) {
+    return refreshPromise;
   }
 
-  const data = await res.json();
-  saveTokens(data);
-  return true;
-}
+  refreshPromise = (async () => {
+    const refreshToken = getRefreshToken();
+    if (!refreshToken) return false;
+    const res = await fetch(`${API_BASE}/auth/refresh`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${refreshToken}` },
+    });
+    if (!res.ok) {
+      clearTokens();
+      return false;
+    }
+    const data = await res.json();
+    saveTokens(data);
+    return true;
+  })();
+
+  try {
+    return await refreshPromise;
+  } finally {
+    refreshPromise = null;
+  }
+} 
