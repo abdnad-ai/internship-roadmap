@@ -3,10 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { saveTokens } from "../lib/api";
+import { saveTokens, apiFetch } from "../lib/api";
 import AuthSidePanel from "../components/AuthSidePanel";
-
-const API_BASE = "http://localhost:3001";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -20,11 +18,11 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      const res = await fetch(`${API_BASE}/auth/login`, {
+      const res = await apiFetch("/auth/login", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-      });
+      }); 
+
       const data = await res.json();
       if (!res.ok) {
         throw new Error(

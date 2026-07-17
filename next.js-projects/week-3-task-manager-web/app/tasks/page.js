@@ -1,8 +1,6 @@
 "use client";
-
 import { useEffect, useState } from "react";
-
-const API_URL = "http://localhost:3001/tasks";
+import { apiFetch } from "../lib/api"; 
 
 export default function TasksPage() {
   const [tasks, setTasks] = useState([]);
@@ -38,11 +36,11 @@ export default function TasksPage() {
       params.set("page", page);
       params.set("limit", limit);
 
-      const res = await fetch(`${API_URL}?${params.toString()}`);
+      const res = await apiFetch(`/tasks?${params.toString()}`);
       if (!res.ok) throw new Error("Failed to load tasks");
       const result = await res.json();
       setTasks(result.data);
-      setTotal(result.total);
+      setTotal(result.total); 
       setLastPage(result.lastPage);
     } catch (err) {
       setError(err.message);
@@ -60,11 +58,10 @@ export default function TasksPage() {
     if (!title.trim()) return;
     setSubmitting(true);
     try {
-      const res = await fetch(API_URL, {
+      const res = await apiFetch("/tasks", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title, description }),
-      });
+      }); 
       if (!res.ok) throw new Error("Failed to create task");
       setTitle("");
       setDescription("");
@@ -85,11 +82,10 @@ export default function TasksPage() {
 
   async function handleUpdate(id) {
     try {
-      const res = await fetch(`${API_URL}/${id}`, {
+      const res = await apiFetch(`/tasks/${id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ title: editTitle, description: editDescription }),
-      });
+      }); 
       if (!res.ok) throw new Error("Failed to update task");
       setEditingId(null);
       await loadTasks();
@@ -100,9 +96,8 @@ export default function TasksPage() {
 
   async function toggleComplete(task) {
     try {
-      const res = await fetch(`${API_URL}/${task.id}`, {
+      const res = await apiFetch(`/tasks/${task.id}`, {
         method: "PATCH",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ completed: !task.completed }),
       });
       if (!res.ok) throw new Error("Failed to update task");
@@ -114,11 +109,11 @@ export default function TasksPage() {
 
   async function handleDelete(id) {
     try {
-      const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+      const res = await apiFetch(`/tasks/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to delete task");
       await loadTasks();
-    } catch (err) {
-      setError(err.message);
+    } catch (err) { 
+      setError(err.message); 
     }
   }
 

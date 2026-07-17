@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import HeroScene from "../components/HeroScene";
+import { apiFetch } from "../lib/api";
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([
@@ -27,10 +28,9 @@ export default function ChatPage() {
     setMessages((prev) => [...prev, { role: "user", content: prompt }, { role: "ai", content: "" }]);
     setIsStreaming(true);
 
-    try {
-      const res = await fetch("http://localhost:3001/ai/stream", {
+    try { 
+      const res = await apiFetch("/ai/stream", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ prompt }),
       });
 
