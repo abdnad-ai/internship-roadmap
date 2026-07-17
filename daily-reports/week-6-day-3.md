@@ -18,7 +18,7 @@ Date: 2026-07-17
 
 ## Links and PRs
 Branch: week-6-day-3-security
-Pull request: 
+Pull request: https://github.com/abdnad-ai/internship-roadmap/pull/34 
 
 ## AI Tools Used
 Claude
