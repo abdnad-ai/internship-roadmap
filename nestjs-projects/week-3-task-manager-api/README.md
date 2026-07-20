@@ -68,3 +68,10 @@ Frontend setup instructions are in the frontend repo, runs on http://localhost:3
 - npm test -- <filename> - runs a single test file, for example npm test -- tasks.service.spec.ts
 - Tests cover the Tasks service (CRUD and not-found cases) and the AI module (validation, structured support responses, and history), using mocked Prisma and mocked Gemini calls so no real database or API calls happen during tests
 
+## Docker
+
+- "docker build -t skillforge-backend ." - builds the image (multi-stage: compiles TypeScript, then a lean runtime with only production dependencies)
+- "docker run --env-file .env -p 3001:3001 skillforge-backend" - runs the container, requires the same environment variables as local development
+- Note: if your database runs on your host machine (not in a container), replace "localhost" with "host.docker.internal" in DATABASE_URL for the container to reach it
+- Uses "node:20-slim" rather than "node:20-alpine" due to a reproducible npm bug on this system that corrupted package installs under Alpine
+
