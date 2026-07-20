@@ -58,3 +58,9 @@ Frontend runs on http://localhost:3000
 - Covers the login form (rendering, input handling, loading state, error handling) and the AnimatedWaveBg component
 - Components that depend on WebGL (HeroScene) can't be meaningfully tested with jsdom, see docs/manual-test-cases.md for documented manual test steps instead
 
+## Docker
+
+- "docker build -t skillforge-frontend ." - builds the image (multi-stage: builds the production Next.js output, then a lean runtime)
+- "docker run -p 3000:3000 skillforge-frontend" - runs the container
+- The container serves the app on port 3000, but still needs the backend running separately (either as its own container on port 3001, or locally) for anything that hits the API
+
