@@ -78,3 +78,18 @@ This repository contains my 8-week AI-Native Software Engineering Internship wor
 * Day 2 AI usage report prepared
 * Git workflow practice checklist added
 
+## Docker Compose
+
+Runs the full stack, PostgreSQL, the backend, and the frontend, together with a single command.
+
+Setup:
+1. Create a ".env" file at the repo root (same level as "docker-compose.yml"), based on ".env.example", with your real JWT_SECRET, JWT_REFRESH_SECRET, and GEMINI_API_KEY.
+2. Run "docker compose up --build" to build and start all three services.
+
+Notes:
+- The backend connects to the database using the service name "postgres", not "localhost", since containers on the same Compose network reach each other by service name.
+- PostgreSQL's data persists in a named volume, so it survives container restarts.
+- The database starts empty on first run. After the postgres service is healthy, run "docker compose exec backend npx prisma migrate deploy" once to apply all migrations.
+- This is a separate database from any local PostgreSQL install, existing local data will not appear here.
+- If port 5432 is already in use locally (a native PostgreSQL install, for example), the compose file maps the container's Postgres to host port 5433 instead, this only affects connecting from your host machine, not how the backend reaches it internally.
+
