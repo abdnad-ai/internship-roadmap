@@ -96,7 +96,7 @@ export default function SupportPage() {
           View past conversations
         </Link> 
         <p className="text-white/60 text-sm md:text-base mb-10 max-w-md">
-          Describe what's going on, and get a response with automatic category and priority tagging in seconds.
+          Describe what&apos;s going on, and get a response with automatic category and priority tagging in seconds.
         </p>
 
         <div className="w-full bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-2 flex items-center gap-2">

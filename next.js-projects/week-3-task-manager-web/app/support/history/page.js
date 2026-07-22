@@ -38,7 +38,7 @@ export default function SupportHistoryPage() {
       <div className="relative z-10 max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold text-white mb-2">Your conversation history</h1>
         <p className="text-white/50 text-sm mb-8">
-          Every question you've asked the support agent, most recent first.
+          Every question you&apos;ve asked the support agent, most recent first.
         </p>
 
         {loading && <p className="text-white/50 text-sm">Loading...</p>}
