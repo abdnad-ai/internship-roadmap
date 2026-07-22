@@ -1,6 +1,6 @@
 name: Backend CI
 
- on:
+on:
   pull_request:
     branches: [main]
     paths:
@@ -11,7 +11,7 @@ name: Backend CI
     paths:
       - "nestjs-projects/week-3-task-manager-api/**"
       - ".github/workflows/backend-ci.yml"
-      
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
