@@ -5,11 +5,13 @@ on:
     branches: [main]
     paths:
       - "next.js-projects/week-3-task-manager-web/**"
+      - ".github/workflows/frontend-ci.yml"
   push:
     branches: [main]
     paths:
       - "next.js-projects/week-3-task-manager-web/**"
-
+      - ".github/workflows/frontend-ci.yml"
+      
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
