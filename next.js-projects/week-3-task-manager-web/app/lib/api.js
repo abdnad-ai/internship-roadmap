@@ -1,11 +1,11 @@
-const API_BASE = "http://localhost:3001";
-
+ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+  
 export function saveTokens(tokens) {
   localStorage.setItem("access_token", tokens.access_token);
   localStorage.setItem("refresh_token", tokens.refresh_token);
 }
 
-export function clearTokens() {
+export function clearTokens() { 
   localStorage.removeItem("access_token");
   localStorage.removeItem("refresh_token");
 }
