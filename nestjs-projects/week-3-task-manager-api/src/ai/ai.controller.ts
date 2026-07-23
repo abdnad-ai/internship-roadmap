@@ -1,4 +1,4 @@
- import { Body, Controller, Post, Get, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Get, Res, UseGuards } from '@nestjs/common';
 import type { Response } from 'express';
 import { IsString, IsNotEmpty } from 'class-validator';
 import { AiService } from './ai.service';
@@ -28,19 +28,24 @@ export class AiController {
     res.setHeader('X-Accel-Buffering', 'no');
 
     try {
-      for await (const chunk of this.aiService.generateStreamingResponse(body.prompt)) {
+      for await (const chunk of this.aiService.generateStreamingResponse(
+        body.prompt,
+      )) {
         res.write(chunk);
       }
-    } catch (error) {
+    } catch {
       res.write('\n[error: stream interrupted]');
     } finally {
       res.end();
-    }  
+    }
   }
 
   @UseGuards(JwtAuthGuard)
   @Post('support')
-  async supportQuery(@Body() body: TestPromptDto, @CurrentUser() user: { id: number }) {
+  async supportQuery(
+    @Body() body: TestPromptDto,
+    @CurrentUser() user: { id: number },
+  ) {
     return this.aiService.generateSupportResponse(body.prompt, user.id);
   }
 
@@ -49,4 +54,4 @@ export class AiController {
   async supportHistory(@CurrentUser() user: { id: number }) {
     return this.aiService.getSupportHistory(user.id);
   }
-} 
+}

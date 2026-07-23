@@ -50,9 +50,10 @@ export default function TasksPage() {
   }
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     loadTasks();
   }, [search, filter, sort, order, page]);
-
+ 
   async function handleCreate(e) {
     e.preventDefault();
     if (!title.trim()) return;

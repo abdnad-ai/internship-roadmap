@@ -37,10 +37,13 @@ describe('TasksService', () => {
 
   describe('create', () => {
     it('should create a task with the given data', async () => {
-      const dto = { title: 'Write tests', description: 'Cover the service layer' };
+      const dto = {
+        title: 'Write tests',
+        description: 'Cover the service layer',
+      };
       prisma.task.create.mockResolvedValue({ id: 1, ...dto });
 
-      const result = await service.create(dto as any);
+      const result = await service.create(dto);
 
       expect(prisma.task.create).toHaveBeenCalledWith({ data: dto });
       expect(result).toEqual({ id: 1, ...dto });
@@ -71,18 +74,23 @@ describe('TasksService', () => {
       prisma.task.findUnique.mockResolvedValue({ id: 1, title: 'Old title' });
       prisma.task.update.mockResolvedValue({ id: 1, ...updateDto });
 
-      const result = await service.update(1, updateDto as any);
+      const result = await service.update(1, updateDto);
 
-      expect(prisma.task.update).toHaveBeenCalledWith({ where: { id: 1 }, data: updateDto });
+      expect(prisma.task.update).toHaveBeenCalledWith({
+        where: { id: 1 },
+        data: updateDto,
+      });
       expect(result).toEqual({ id: 1, ...updateDto });
     });
 
     it('should throw NotFoundException when updating a task that does not exist', async () => {
       prisma.task.findUnique.mockResolvedValue(null);
 
-      await expect(service.update(999, { title: 'x' } as any)).rejects.toThrow(NotFoundException);
+      await expect(service.update(999, { title: 'x' } as any)).rejects.toThrow(
+        NotFoundException,
+      );
     });
-  }); 
+  });
 
   describe('remove', () => {
     it('should delete the task after confirming it exists', async () => {
@@ -103,4 +111,4 @@ describe('TasksService', () => {
       await expect(service.remove(999)).rejects.toThrow(NotFoundException);
     });
   });
-}); 
+});

@@ -11,13 +11,19 @@ export default function DashboardPage() {
   const [users, setUsers] = useState([]);
   const [usersError, setUsersError] = useState("");
 
-  useEffect(() => {
-    if (!getAccessToken()) {
-      router.replace("/login");
-      return;
+  async function loadAllUsers() {
+    try {
+      const res = await apiFetch("/auth/users");
+      if (!res.ok) {
+        setUsersError("Could not load users");
+        return;
+      }
+      const data = await res.json();
+      setUsers(data);
+    } catch (err) {
+      setUsersError("Could not load users");
     }
-    loadUser();
-  }, []);
+  }
 
   async function loadUser() {
     try {
@@ -38,19 +44,14 @@ export default function DashboardPage() {
     }
   }
 
-  async function loadAllUsers() {
-    try {
-      const res = await apiFetch("/auth/users");
-      if (!res.ok) {
-        setUsersError("Could not load users");
-        return;
-      }
-      const data = await res.json();
-      setUsers(data);
-    } catch (err) {
-      setUsersError("Could not load users");
+  useEffect(() => {
+    if (!getAccessToken()) {
+      router.replace("/login");
+      return;
     }
-  }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadUser();
+  }, []); 
 
   async function handleLogout() {
     try {

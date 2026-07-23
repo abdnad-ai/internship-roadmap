@@ -1,10 +1,14 @@
- import { Test, TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { AiController } from './ai.controller';
 import { AiService } from './ai.service';
 
 describe('AiController', () => {
   let controller: AiController;
-  let aiService: { generateResponse: jest.Mock; generateSupportResponse: jest.Mock; getSupportHistory: jest.Mock };
+  let aiService: {
+    generateResponse: jest.Mock;
+    generateSupportResponse: jest.Mock;
+    getSupportHistory: jest.Mock;
+  };
 
   beforeEach(async () => {
     aiService = {
@@ -38,12 +42,22 @@ describe('AiController', () => {
 
   describe('supportQuery', () => {
     it('should call the AI service with the prompt and the current user id', async () => {
-      const mockResult = { response: 'Fixed', category: 'Technical', priority: 'Low' };
+      const mockResult = {
+        response: 'Fixed',
+        category: 'Technical',
+        priority: 'Low',
+      };
       aiService.generateSupportResponse.mockResolvedValue(mockResult);
 
-      const result = await controller.supportQuery({ prompt: 'It is broken' }, { id: 5 });
+      const result = await controller.supportQuery(
+        { prompt: 'It is broken' },
+        { id: 5 },
+      );
 
-      expect(aiService.generateSupportResponse).toHaveBeenCalledWith('It is broken', 5);
+      expect(aiService.generateSupportResponse).toHaveBeenCalledWith(
+        'It is broken',
+        5,
+      );
       expect(result).toEqual(mockResult);
     });
   });
@@ -59,4 +73,4 @@ describe('AiController', () => {
       expect(result).toEqual(mockHistory);
     });
   });
-}); 
+});

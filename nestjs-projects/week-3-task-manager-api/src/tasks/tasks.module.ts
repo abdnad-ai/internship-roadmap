@@ -8,4 +8,4 @@ import { PrismaModule } from '../prisma/prisma.module';
   controllers: [TasksController],
   providers: [TasksService],
 })
-export class TasksModule {} 
+export class TasksModule {}

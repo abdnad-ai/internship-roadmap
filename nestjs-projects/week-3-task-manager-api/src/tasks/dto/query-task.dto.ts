@@ -22,4 +22,4 @@ export class QueryTaskDto {
 
   @IsOptional()
   limit?: string;
-} 
+}

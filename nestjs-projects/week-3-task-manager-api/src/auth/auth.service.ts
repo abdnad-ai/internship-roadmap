@@ -13,14 +13,12 @@ import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
-    private readonly SALT_ROUNDS = 10;
+  private readonly SALT_ROUNDS = 10;
 
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
     private config: ConfigService,
-
-    
   ) {}
 
   async register(dto: RegisterDto) {
@@ -34,8 +32,6 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(dto.password, this.SALT_ROUNDS);
     const user = await this.prisma.user.create({
       data: { email: dto.email, password: hashedPassword },
-
-      
     });
 
     return this.issueTokens(user.id, user.email, user.role);
@@ -93,18 +89,21 @@ export class AuthService {
 
     const accessToken = await this.jwt.signAsync(payload, {
       secret: this.config.get('JWT_SECRET'),
-      expiresIn: '1h',   
+      expiresIn: '1h',
     });
-           
+
     const refreshToken = await this.jwt.signAsync(payload, {
       secret: this.config.get('JWT_REFRESH_SECRET'),
       expiresIn: this.config.get('JWT_REFRESH_EXPIRES'),
     });
 
-    const hashedRefreshToken = await bcrypt.hash(refreshToken, this.SALT_ROUNDS);
+    const hashedRefreshToken = await bcrypt.hash(
+      refreshToken,
+      this.SALT_ROUNDS,
+    );
     await this.prisma.user.update({
       where: { id: userId },
-      data: { hashedRefreshToken }, 
+      data: { hashedRefreshToken },
     });
 
     return { access_token: accessToken, refresh_token: refreshToken };
