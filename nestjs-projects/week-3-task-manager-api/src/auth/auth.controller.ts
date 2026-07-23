@@ -1,4 +1,12 @@
-import { Body, Controller, Post, HttpCode, HttpStatus, Get, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  HttpCode,
+  HttpStatus,
+  Get,
+  UseGuards,
+} from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
@@ -9,12 +17,9 @@ import { RefreshAuthGuard } from './guards/refresh-auth.guard';
 import { Roles } from './decorators/roles.decorator';
 import { RolesGuard } from './guards/roles.guard';
 
-
 @Controller('auth')
-
 export class AuthController {
   constructor(private authService: AuthService) {}
-  
 
   @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Post('register')
@@ -23,7 +28,7 @@ export class AuthController {
   }
 
   @Throttle({ default: { limit: 5, ttl: 60000 } })
-  @Post('login') 
+  @Post('login')
   @HttpCode(HttpStatus.OK)
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);

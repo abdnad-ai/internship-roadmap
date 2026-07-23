@@ -1,4 +1,4 @@
- import { ConfigModule } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
@@ -30,4 +30,4 @@ import { AiModule } from './ai/ai.module';
     },
   ],
 })
-export class AppModule {} 
+export class AppModule {}

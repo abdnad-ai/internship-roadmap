@@ -1,4 +1,4 @@
- import { Test, TestingModule } from '@nestjs/testing';
+import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
 import { BadRequestException } from '@nestjs/common';
 import { AiService } from './ai.service';
@@ -25,7 +25,9 @@ jest.mock('@google/generative-ai', () => {
 
 describe('AiService', () => {
   let service: AiService;
-  let prisma: { supportConversation: { create: jest.Mock; findMany: jest.Mock } };
+  let prisma: {
+    supportConversation: { create: jest.Mock; findMany: jest.Mock };
+  };
 
   beforeEach(async () => {
     prisma = {
@@ -60,22 +62,31 @@ describe('AiService', () => {
 
   describe('generateResponse', () => {
     it('should throw BadRequestException for an empty prompt', async () => {
-      await expect(service.generateResponse('')).rejects.toThrow(BadRequestException);
+      await expect(service.generateResponse('')).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('should throw BadRequestException for a prompt that is too long', async () => {
       const longPrompt = 'a'.repeat(3000);
-      await expect(service.generateResponse(longPrompt)).rejects.toThrow(BadRequestException);
+      await expect(service.generateResponse(longPrompt)).rejects.toThrow(
+        BadRequestException,
+      );
     });
   });
 
   describe('generateSupportResponse', () => {
     it('should throw BadRequestException for an empty query', async () => {
-      await expect(service.generateSupportResponse('', 1)).rejects.toThrow(BadRequestException);
+      await expect(service.generateSupportResponse('', 1)).rejects.toThrow(
+        BadRequestException,
+      );
     });
 
     it('should return a structured response and save the conversation', async () => {
-      const result = await service.generateSupportResponse('My payment failed', 1);
+      const result = await service.generateSupportResponse(
+        'My payment failed',
+        1,
+      );
 
       expect(result).toEqual({
         response: 'Mocked support response',
@@ -84,6 +95,7 @@ describe('AiService', () => {
       });
       expect(prisma.supportConversation.create).toHaveBeenCalledTimes(1);
       expect(prisma.supportConversation.create).toHaveBeenCalledWith({
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         data: expect.objectContaining({
           query: 'My payment failed',
           response: 'Mocked support response',
@@ -105,4 +117,4 @@ describe('AiService', () => {
       });
     });
   });
-}); 
+});

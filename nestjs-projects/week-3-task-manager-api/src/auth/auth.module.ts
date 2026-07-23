@@ -23,5 +23,6 @@ import { RefreshStrategy } from './strategies/refresh.strategy';
     }),
   ],
   controllers: [AuthController],
-providers: [AuthService, JwtStrategy, RefreshStrategy],})
+  providers: [AuthService, JwtStrategy, RefreshStrategy],
+})
 export class AuthModule {}
