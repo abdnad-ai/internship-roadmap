@@ -93,3 +93,14 @@ Notes:
 - This is a separate database from any local PostgreSQL install, existing local data will not appear here.
 - If port 5432 is already in use locally (a native PostgreSQL install, for example), the compose file maps the container's Postgres to host port 5433 instead, this only affects connecting from your host machine, not how the backend reaches it internally.
 
+## Continuous Integration
+
+Two GitHub Actions workflows run automatically on every pull request and push to main:
+
+- ".github/workflows/backend-ci.yml" - installs dependencies, generates the Prisma client, runs lint, runs the test suite (with a real PostgreSQL service container available), and builds the NestJS app
+- ".github/workflows/frontend-ci.yml" - installs dependencies, runs lint, runs the test suite, and builds the Next.js app
+
+Each workflow only triggers when files under its own project (or its own workflow file) change, so an unrelated change to one project doesn't run the other's pipeline.
+
+Required GitHub repo secrets for the backend workflow: JWT_SECRET, JWT_REFRESH_SECRET, GEMINI_API_KEY (Settings -> Secrets and variables -> Actions).
+
