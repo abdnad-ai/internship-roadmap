@@ -7,9 +7,11 @@ import { AppService } from './app.service';
 import { TasksModule } from './tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
 import { AiModule } from './ai/ai.module';
+import { MiddlewareConsumer, NestModule } from '@nestjs/common';
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
 
 @Module({
-  imports: [
+  imports: [ 
     ConfigModule.forRoot({ isGlobal: true }),
     ThrottlerModule.forRoot([
       {
@@ -30,4 +32,8 @@ import { AiModule } from './ai/ai.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}  
