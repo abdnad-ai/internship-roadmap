@@ -104,3 +104,30 @@ Each workflow only triggers when files under its own project (or its own workflo
 
 Required GitHub repo secrets for the backend workflow: JWT_SECRET, JWT_REFRESH_SECRET, GEMINI_API_KEY (Settings -> Secrets and variables -> Actions).
 
+## Deployment
+
+Live URLs:
+- Frontend: https://skillforge-frontend-9ahm.onrender.com
+- Backend: https://skillforge-backend-zb0w.onrender.com
+
+Platform: Render (free tier web services), database hosted on Neon (free tier PostgreSQL).
+
+### Backend setup on Render
+- New Web Service, connected to this repo, Root Directory set to "nestjs-projects/week-3-task-manager-api", Runtime auto-detected as Docker
+- Environment variables: DATABASE_URL (Neon connection string), JWT_SECRET, JWT_REFRESH_SECRET, JWT_REFRESH_EXPIRES, GEMINI_API_KEY, NODE_ENV=production
+
+### Frontend setup on Render
+- New Web Service, connected to this repo, Root Directory set to "next.js-projects/week-3-task-manager-web", Runtime auto-detected as Docker
+- Environment variables: NEXT_PUBLIC_API_URL (the backend's live URL), NODE_ENV=production
+- Important: NEXT_PUBLIC_API_URL must be passed as a Docker build ARG, not just a runtime environment variable, since Next.js bakes NEXT_PUBLIC_ values into the client bundle at build time. The Dockerfile declares "ARG NEXT_PUBLIC_API_URL" and "ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL" in the build stage for this reason.
+
+### Database
+- PostgreSQL hosted on Neon (free tier)
+- Migrations applied with "npx prisma migrate deploy" against the Neon connection string before the backend was first deployed
+
+### CORS
+- The backend's CORS configuration explicitly allows both "http://localhost:3000" (local dev) and the deployed frontend's real origin
+
+### Known limitation
+- Both services are on Render's free instance type, which spins down after inactivity. The first request after idle time can take 30-60 seconds to respond while the instance wakes up.
+
