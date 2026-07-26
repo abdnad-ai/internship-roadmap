@@ -1,39 +1,39 @@
-# Week 7 Day 4 AI Usage Report
+ # Week 7 Day 4 AI Usage Report
 
 ## Feature or Task
-Deploy the full application, backend, frontend, and database, to a live environment, and get every feature genuinely working end to end on the real deployed URLs.
+Deploy the full-stack app to production: backend and frontend on Render, database on Neon, with all environment variables, CORS, and build configuration working correctly end to end.
 
 ## AI Tool Used
 Claude
 
 ## Prompt Given
-I asked Claude to recommend a deployment platform given uncertainty about current free tier policies, then for help through a sequence of real deployment problems, an unexpected card verification requirement, a misconfigured service running the wrong project, a CORS failure, and a persistent fetch failure that survived multiple redeploys and even a private browser window test.
+I asked Claude to confirm the Day 4 tasks and recommend a deployment platform, given uncertainty about which platforms still have genuine free tiers. I asked for help after Render unexpectedly asked for card details on its PostgreSQL offering, after a runtime error that turned out to be a Root Directory misconfiguration, after a CORS error, and after a persistent "failed to fetch" error that turned out to be caused by how Next.js and Docker interact around build-time environment variables.
 
 ## AI Output Summary
-Claude checked current information rather than relying on outdated assumptions about which platforms still offer genuine free tiers, catching that Render's database now requires card verification and recommending Neon as a card-free alternative for just the database. When a runtime error didn't match the service it was reported under, it read the actual stack trace rather than trusting the dashboard's label, which correctly identified a Root Directory misconfiguration. When a fetch failure persisted even after fixing the obvious CORS and env var issues, it recognized this as a Next.js and Docker interaction problem, NEXT_PUBLIC_ variables need to be available at build time, not just runtime, and fixed it by declaring the variable as a Docker build argument.
+Claude recommended pairing Render's free web services with Neon's genuinely card-free managed Postgres after Render's own database option required card verification. When the frontend service threw an unexpected runtime error, Claude helped trace it to a Root Directory misconfiguration by reading the actual deployed logs rather than trusting the service name shown in the dashboard. After a CORS error, Claude identified the backend needed the deployed frontend's real origin added explicitly. The hardest issue was NEXT_PUBLIC_API_URL being set correctly in Render's dashboard but never reaching the client bundle, Claude explained that Next.js bakes NEXT_PUBLIC_ variables in at build time, not runtime, so the Dockerfile needed to declare it as a build ARG and forward it via ENV before the build step.
 
 ## What I Accepted
 1. The Render plus Neon platform combination.
-2. The Root Directory diagnosis and fix.
-3. The CORS configuration fix.
-4. The Docker build argument fix for the persistent NEXT_PUBLIC_API_URL issue.
-5. The full end to end test plan covering five separate live features.
+2. The Root Directory fix for the frontend service.
+3. The CORS configuration fix adding the deployed frontend's real origin.
+4. The Dockerfile fix declaring NEXT_PUBLIC_API_URL as a build ARG.
+5. The recommendation to verify every fix in a private browser window to rule out caching.
 
 ## What I Rejected
-Nothing major, each diagnosis was verified against real logs or real browser behavior before being accepted, including deliberately testing in a private window specifically to rule out a caching explanation before concluding the fix itself was still wrong.
+Nothing major. All fixes were verified against real deployed behavior before being accepted as correct.
 
 ## Manual Changes Made
-1. Created the Neon database and copied its connection string directly, without it ever appearing in chat.
-2. Ran the production migration using a temporary gitignored local env file rather than storing the real connection string in any committed file.
-3. Manually configured and reconfigured both Render services multiple times, including forcing cache cleared rebuilds, to distinguish real code issues from stale build artifacts.
-4. Tested the same fix in a private browser window before accepting or rejecting it as the actual cause, rather than assuming a redeploy alone proved anything.
-5. Manually walked through five separate live features, not just a homepage load, before considering the deployment actually done.
+1. Manually created the Neon project and copied its connection string, kept out of chat and out of any committed file.
+2. Ran the Prisma migration against Neon locally using a temporary gitignored env file.
+3. Manually configured both Render services' settings, root directory, branch, and environment variables, and manually triggered several redeploys, including cache-cleared rebuilds.
+4. Tested every fix in a private browser window to rule out client-side caching before concluding a fix hadn't taken effect.
+5. Manually tested the complete live application end to end across five separate features.
 
 ## Risks Found
-1. A dashboard's display label for a service is not authoritative, the actual running code is the only real source of truth, confirmed here by a service labeled correctly by name while running an entirely different project's compiled output.
-2. Free tier policies across hosting platforms change frequently and inconsistently between sources, verifying directly against what a platform's own signup flow actually shows was more reliable than search results describing supposed current pricing.
-3. Environment variables have different lifecycles, build time versus runtime, that matter enormously for frontend frameworks that inline configuration into a client bundle, a variable can be set correctly in every dashboard and still never reach the browser if this distinction isn't respected in the Dockerfile.
-4. A repeated symptom after a fix does not always mean the fix failed, ruling out browser caching explicitly, rather than assuming the deployment was still broken, kept the debugging path efficient.
+1. A dashboard's service name label is not proof of what's actually running inside it, the frontend service was labeled correctly but was running the backend's compiled code until the Root Directory was fixed.
+2. Next.js's NEXT_PUBLIC_ environment variables have a build-time versus runtime distinction that matters enormously for Docker-based deployments, a variable can be set correctly in a platform's dashboard and still never reach the compiled client bundle if the Dockerfile doesn't explicitly forward it as a build argument.
+3. Browser caching can look identical to a genuinely stale deployment, ruling it out with a private window before investigating further saved real debugging time.
 
 ## Final Explanation in My Own Words
-Today's deployment surfaced a chain of genuinely different problems that each looked similar on the surface, a request failing, but had entirely different root causes, a wrong build target, a missing CORS origin, and a build time versus runtime environment variable mismatch specific to how Next.js and Docker interact. The most valuable habit throughout was refusing to treat any of these as solved until directly verified, reading the actual runtime stack trace instead of trusting a service's label, and testing in a private browser window before accepting that a redeploy had actually changed anything. The application is now live and confirmed working across registration, tasks, the AI support agent with history, and streaming chat, not because the deploy succeeded, but because each of those was manually walked through and confirmed on the real URLs. 
+Today's deployment surfaced two non-obvious platform-specific issues rather than ordinary code bugs: a dashboard mislabeling what was actually running, and a build-time versus runtime distinction in how Next.js and Docker interact around environment variables. Neither was something local development would ever have caught, since both only manifest in a containerized production build. Verifying against real runtime logs and using a private browser window to rule out caching were what actually resolved these, rather than assuming the dashboard configuration or the code itself was the full picture. 
+
