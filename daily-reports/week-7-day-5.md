@@ -18,8 +18,8 @@ Date: 2026-07-27
 
 ## Links and PRs
 Branch: week-7-day-5-production-readiness
-Pull request: [add after opening] 
-
+Pull request: https://github.com/abdnad-ai/internship-roadmap/pull/41
+ 
 ## AI Tools Used
 Claude
 
