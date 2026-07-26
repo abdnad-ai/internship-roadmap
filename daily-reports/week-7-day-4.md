@@ -19,8 +19,10 @@ Date: 2026-07-26
 Branch: week-7-day-4-deployment
 Pull request: https://github.com/abdnad-ai/internship-roadmap/pull/40 
 
+https://github.com/abdnad-ai/internship-roadmap/pull/42
+
 ## AI Tools Used
-Claude
+Claude 
 
 ## Prompts Used
 1. Asked Claude to confirm the Day 4 tasks and recommend a deployment platform, given uncertainty about which platforms still have genuine free tiers.
