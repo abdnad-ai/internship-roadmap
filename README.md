@@ -131,3 +131,19 @@ Platform: Render (free tier web services), database hosted on Neon (free tier Po
 ### Known limitation
 - Both services are on Render's free instance type, which spins down after inactivity. The first request after idle time can take 30-60 seconds to respond while the instance wakes up.
 
+## Production Hardening (Week 7 Day 5)
+
+- Security headers added via helmet (CSP, HSTS, X-Frame-Options, etc.)
+- Global exception filter returns consistent JSON error responses (statusCode, timestamp, path, message)
+- Request logging middleware logs every request (method, path, status, duration) via NestJS Logger
+- Fixed a gap where task routes had no auth guard; JwtAuthGuard is now applied to the Tasks controller
+
+## Monitoring and Logs
+
+Application logs (including request logs from the middleware above) are viewable in the Render dashboard, under each service's "Logs" tab, in real time.
+
+## Additional Documentation
+
+- See DEPLOYMENT.md for full setup-from-scratch deployment steps
+- See ROLLBACK.md for how to revert a bad deploy
+
