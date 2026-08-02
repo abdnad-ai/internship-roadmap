@@ -1,0 +1,55 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+ model User {
+  id                 String    @id @default(uuid())
+  email               String    @unique
+  password            String
+  hashedRefreshToken  String?
+  createdAt           DateTime  @default(now())
+  monitors            Monitor[]
+} 
+
+model Monitor {
+  id            String         @id @default(uuid())
+  userId        String
+  url           String
+  sourceType    String         @default("webpage")
+  condition     String
+  notifyByEmail Boolean        @default(false)
+  status        String         @default("active")
+  createdAt     DateTime       @default(now())
+  user          User           @relation(fields: [userId], references: [id])
+  checkLogs     CheckLog[]
+  notifications Notification[]
+}
+
+model CheckLog {
+  id          String   @id @default(uuid())
+  monitorId   String
+  checkedAt   DateTime @default(now())
+  rawContent  String
+  aiVerdict   Boolean
+  aiReasoning String
+  monitor     Monitor  @relation(fields: [monitorId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  monitorId String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  monitor   Monitor  @relation(fields: [monitorId], references: [id])
+}
