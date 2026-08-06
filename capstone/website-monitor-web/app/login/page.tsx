@@ -1,4 +1,4 @@
-﻿"use client";
+﻿ "use client";
 import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -27,46 +27,57 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0B0E14] px-4">
-      <div className="w-full max-w-sm">
-        <div className="flex items-center gap-2 mb-8">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#F5A623] animate-pulse" />
-          <span className="font-mono text-sm tracking-wide text-[#8A93A6]">watchpost</span>
+    <div className="flex min-h-screen items-center justify-center px-4 py-12">
+      <div className="liquid-glass-strong w-full max-w-md rounded-3xl p-8 md:p-10">
+        <div className="mb-8 flex items-center gap-2">
+          <span className="h-2.5 w-2.5 rounded-full bg-white/70" />
+          <span className="text-sm font-medium tracking-wide text-white/60">watchpost</span>
         </div>
-        <h1 className="text-2xl font-semibold text-[#E7EAF0] mb-1 tracking-tight">Sign in</h1>
-        <p className="text-sm text-[#8A93A6] mb-6">Keep watching where you left off.</p>
-        <form onSubmit={handleSubmit} className="space-y-4">
+
+        <h1 className="text-4xl tracking-[-0.03em] text-white">
+          Welcome{" "}
+          <span className="font-[family-name:var(--font-source-serif)] italic text-white/80">back</span>
+        </h1>
+        <p className="mt-2 text-sm text-white/50">Sign in to keep watching where you left off.</p>
+
+        <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div>
-            <label className="block text-xs font-mono text-[#8A93A6] mb-1.5">EMAIL</label>
+            <label className="mb-1.5 block text-xs uppercase tracking-widest text-white/40">Email</label>
             <input
               type="email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md bg-[#131826] border border-[#232A3D] px-3 py-2 text-[#E7EAF0] text-sm focus:outline-none focus:ring-2 focus:ring-[#F5A623]/50 focus:border-[#F5A623]"
+              className="liquid-glass w-full rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none"
             />
           </div>
           <div>
-            <label className="block text-xs font-mono text-[#8A93A6] mb-1.5">PASSWORD</label>
+            <label className="mb-1.5 block text-xs uppercase tracking-widest text-white/40">Password</label>
             <input
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md bg-[#131826] border border-[#232A3D] px-3 py-2 text-[#E7EAF0] text-sm focus:outline-none focus:ring-2 focus:ring-[#F5A623]/50 focus:border-[#F5A623]"
+              className="liquid-glass w-full rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none"
             />
           </div>
-          {error && <p className="text-sm text-[#F87171]">{error}</p>}
+
+          {error && <p className="text-sm text-white/70">{error}</p>}
+
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-[#F5A623] text-[#0B0E14] font-medium text-sm py-2.5 hover:bg-[#f0ad3d] transition-colors disabled:opacity-60"
+            className="liquid-glass-strong mt-2 w-full rounded-full py-3 text-sm font-medium text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50"
           >
-            {loading ? "Signing in…" : "Sign in"}
+            {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
-        <p className="text-sm text-[#8A93A6] mt-6">
-          No account? <Link href="/register" className="text-[#F5A623] hover:underline">Create one</Link>
+
+        <p className="mt-6 text-center text-sm text-white/50">
+          No account?{" "}
+          <Link href="/register" className="text-white hover:underline">
+            Create one
+          </Link>
         </p>
       </div>
     </div>

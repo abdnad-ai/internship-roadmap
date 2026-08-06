@@ -1,4 +1,4 @@
-﻿"use client";
+﻿ "use client";
 import { useState, useEffect, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -32,27 +32,29 @@ export default function NewMonitorPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0B0E14] text-[#E7EAF0]">
-      <header className="border-b border-[#232A3D] px-6 py-4">
-        <Link href="/dashboard" className="text-sm text-[#8A93A6] hover:text-[#E7EAF0]">← Back</Link>
-      </header>
-      <main className="max-w-lg mx-auto px-6 py-10">
-        <h1 className="text-xl font-semibold tracking-tight mb-1">New monitor</h1>
-        <p className="text-sm text-[#8A93A6] mb-8">Describe what you are waiting for, in plain English.</p>
+    <div className="min-h-screen px-4 py-8 md:px-8 md:py-10">
+      <div className="mx-auto max-w-lg">
+        <Link href="/dashboard" className="text-sm text-white/50 hover:text-white">
+          Back
+        </Link>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <h1 className="mt-6 text-4xl tracking-[-0.03em] text-white">
+          New{" "}
+          <span className="font-[family-name:var(--font-source-serif)] italic text-white/80">monitor</span>
+        </h1>
+        <p className="mt-2 mb-8 text-sm text-white/50">Describe what you are waiting for, in plain English.</p>
+
+        <form onSubmit={handleSubmit} className="liquid-glass-strong space-y-5 rounded-3xl p-6 md:p-8">
           <div>
-            <label className="block text-xs font-mono text-[#8A93A6] mb-1.5">SOURCE TYPE</label>
+            <label className="mb-1.5 block text-xs uppercase tracking-widest text-white/40">Source type</label>
             <div className="flex gap-2">
               {(["webpage", "api"] as const).map((type) => (
                 <button
                   type="button"
                   key={type}
                   onClick={() => setSourceType(type)}
-                  className={`px-3 py-1.5 rounded-md text-sm border ${
-                    sourceType === type
-                      ? "border-[#F5A623] text-[#F5A623] bg-[#F5A623]/10"
-                      : "border-[#232A3D] text-[#8A93A6]"
+                  className={`liquid-glass rounded-full px-4 py-2 text-sm transition-colors ${
+                    sourceType === type ? "text-white" : "text-white/40"
                   }`}
                 >
                   {type === "webpage" ? "Webpage" : "API endpoint"}
@@ -62,50 +64,50 @@ export default function NewMonitorPage() {
           </div>
 
           <div>
-            <label className="block text-xs font-mono text-[#8A93A6] mb-1.5">URL</label>
+            <label className="mb-1.5 block text-xs uppercase tracking-widest text-white/40">URL</label>
             <input
               type="url"
               required
               placeholder="https://example.com/jobs"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              className="w-full rounded-md bg-[#131826] border border-[#232A3D] px-3 py-2 text-[#E7EAF0] text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#F5A623]/50 focus:border-[#F5A623]"
+              className="liquid-glass w-full rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-mono text-[#8A93A6] mb-1.5">CONDITION TO WATCH FOR</label>
+            <label className="mb-1.5 block text-xs uppercase tracking-widest text-white/40">Condition to watch for</label>
             <textarea
               required
               rows={3}
               placeholder="e.g. a new job posting appears on this page"
               value={condition}
               onChange={(e) => setCondition(e.target.value)}
-              className="w-full rounded-md bg-[#131826] border border-[#232A3D] px-3 py-2 text-[#E7EAF0] text-sm focus:outline-none focus:ring-2 focus:ring-[#F5A623]/50 focus:border-[#F5A623] resize-none"
+              className="liquid-glass w-full resize-none rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none"
             />
           </div>
 
-          <label className="flex items-center gap-2 text-sm text-[#8A93A6]">
+          <label className="flex items-center gap-2 text-sm text-white/60">
             <input
               type="checkbox"
               checked={notifyByEmail}
               onChange={(e) => setNotifyByEmail(e.target.checked)}
-              className="rounded border-[#232A3D] bg-[#131826] accent-[#F5A623]"
+              className="accent-white/70"
             />
             Email me when the condition is met
           </label>
 
-          {error && <p className="text-sm text-[#F87171]">{error}</p>}
+          {error && <p className="text-sm text-white/90">Error: {error}</p>}
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-[#F5A623] text-[#0B0E14] font-medium text-sm py-2.5 hover:bg-[#f0ad3d] transition-colors disabled:opacity-60"
+            className="liquid-glass-strong w-full rounded-full py-3 text-sm font-medium text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50"
           >
-            {loading ? "Creating…" : "Create monitor"}
+            {loading ? "Creating..." : "Create monitor"}
           </button>
         </form>
-      </main>
+      </div>
     </div>
   );
-}
+} 

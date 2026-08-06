@@ -1,4 +1,4 @@
-﻿"use client";
+﻿ "use client";
 import { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -88,54 +88,58 @@ export default function DashboardPage() {
   const unreadCount = notifications.filter((item) => !item.read).length;
 
   return (
-    <div className="min-h-screen bg-[#0B0E14] text-[#E7EAF0]">
-      <header className="border-b border-[#232A3D] px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-[#F5A623] animate-pulse" />
-          <span className="font-mono text-sm tracking-wide text-[#8A93A6]">watchpost</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link
-            href="/monitors/new"
-            className="rounded-md bg-[#F5A623] text-[#0B0E14] font-medium text-sm px-4 py-2 hover:bg-[#f0ad3d] transition-colors"
-          >
-            + New monitor
-          </Link>
-          <button onClick={handleLogout} className="text-sm text-[#8A93A6] hover:text-[#E7EAF0] px-2">
-            Sign out
-          </button>
-        </div>
-      </header>
+    <div className="min-h-screen px-4 py-8 md:px-8 md:py-10">
+      <div className="mx-auto max-w-3xl">
+        <header className="mb-10 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="h-2.5 w-2.5 rounded-full bg-white/70" />
+            <span className="text-sm font-medium tracking-wide text-white/60">watchpost</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <Link
+              href="/monitors/new"
+              className="liquid-glass-strong rounded-full px-5 py-2.5 text-sm font-medium text-white transition-transform hover:scale-105 active:scale-95"
+            >
+              + New monitor
+            </Link>
+            <button onClick={handleLogout} className="text-sm text-white/50 transition-colors hover:text-white">
+              Sign out
+            </button>
+          </div>
+        </header>
 
-      <main className="max-w-3xl mx-auto px-6 py-10">
-        <h1 className="text-xl font-semibold tracking-tight mb-1">Your monitors</h1>
-        <p className="text-sm text-[#8A93A6] mb-8">Watching the web so you do not have to.</p>
+        <h1 className="text-4xl tracking-[-0.03em] text-white">
+          Your{" "}
+          <span className="font-[family-name:var(--font-source-serif)] italic text-white/80">monitors</span>
+        </h1>
+        <p className="mt-2 mb-10 text-sm text-white/50">Watching the web so you do not have to.</p>
 
         {notifications.length > 0 && (
-          <section className="rounded-lg border border-[#232A3D] bg-[#131826] mb-8 overflow-hidden">
-            <div className="flex items-center justify-between px-5 py-3 border-b border-[#232A3D]">
-              <h2 className="text-xs font-mono uppercase tracking-wide text-[#8A93A6]">Alerts</h2>
+          <section className="liquid-glass mb-8 overflow-hidden rounded-2xl">
+            <div className="flex items-center justify-between px-5 py-3">
+              <h2 className="text-xs uppercase tracking-widest text-white/40">Alerts</h2>
               <div className="flex items-center gap-4">
-                <span className="text-xs font-mono text-[#F5A623]">{unreadCount} unread</span>
+                <span className="text-xs text-white/60">{unreadCount} unread</span>
                 {unreadCount > 0 && (
-                  <button
-                    onClick={() => void handleMarkAllRead()}
-                    className="text-xs text-[#8A93A6] hover:text-[#E7EAF0] hover:underline"
-                  >
+                  <button onClick={() => void handleMarkAllRead()} className="text-xs text-white/50 transition-colors hover:text-white hover:underline">
                     Mark all read
                   </button>
                 )}
               </div>
             </div>
-            <div className="divide-y divide-[#232A3D]">
+            <div className="divide-y divide-white/[0.06]">
               {notifications.slice(0, 5).map((notification) => (
-                <div key={notification.id} className={`px-5 py-3 text-sm ${notification.read ? "text-[#8A93A6]" : "text-[#E7EAF0]"}`}>
+                <div key={notification.id} className={`px-5 py-3 text-sm ${notification.read ? "text-white/40" : "text-white/90"}`}>
                   <div className="flex items-start justify-between gap-4">
-                    <Link href={`/monitors/${notification.monitor.id}`} className="hover:text-[#F5A623]">
+                    <Link href={`/monitors/${notification.monitor.id}`} className="hover:text-white">
                       <p>{notification.message}</p>
-                      <p className="font-mono text-xs text-[#8A93A6] mt-1">{new Date(notification.createdAt).toLocaleString()}</p>
+                      <p className="mt-1 text-xs text-white/40">{new Date(notification.createdAt).toLocaleString()}</p>
                     </Link>
-                    {!notification.read && <button onClick={() => void handleMarkRead(notification.id)} className="text-xs text-[#F5A623] hover:underline shrink-0">Mark read</button>}
+                    {!notification.read && (
+                      <button onClick={() => void handleMarkRead(notification.id)} className="shrink-0 text-xs text-white/60 hover:text-white hover:underline">
+                        Mark read
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
@@ -144,20 +148,20 @@ export default function DashboardPage() {
         )}
 
         {error && (
-          <div className="rounded-md border border-[#F87171]/30 bg-[#F87171]/10 text-[#F87171] text-sm px-4 py-3 mb-6">
-            {error}
+          <div className="liquid-glass mb-6 rounded-xl px-4 py-3 text-sm text-white/90">
+            Error: {error}
           </div>
         )}
 
         {loading ? (
-          <p className="text-sm text-[#8A93A6] font-mono">Loading monitors…</p>
+          <p className="text-sm text-white/50">Loading monitors...</p>
         ) : monitors.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-[#232A3D] px-6 py-12 text-center">
-            <p className="text-[#E7EAF0] font-medium mb-1">Nothing being watched yet</p>
-            <p className="text-sm text-[#8A93A6] mb-5">Add a URL and describe what you are waiting for.</p>
+          <div className="liquid-glass rounded-2xl px-6 py-12 text-center">
+            <p className="mb-1 font-medium text-white">Nothing being watched yet</p>
+            <p className="mb-5 text-sm text-white/50">Add a URL and describe what you are waiting for.</p>
             <Link
               href="/monitors/new"
-              className="inline-block rounded-md bg-[#F5A623] text-[#0B0E14] font-medium text-sm px-4 py-2 hover:bg-[#f0ad3d] transition-colors"
+              className="liquid-glass-strong inline-block rounded-full px-5 py-2.5 text-sm font-medium text-white transition-transform hover:scale-105 active:scale-95"
             >
               Create your first monitor
             </Link>
@@ -165,36 +169,30 @@ export default function DashboardPage() {
         ) : (
           <div className="space-y-3">
             {monitors.map((monitor) => (
-              <div key={monitor.id} className="rounded-lg border border-[#232A3D] bg-[#131826] px-5 py-4">
+              <div key={monitor.id} className="liquid-glass rounded-2xl px-5 py-4">
                 <div className="flex items-start justify-between gap-4">
-                  <Link href={`/monitors/${monitor.id}`} className="flex-1 min-w-0 group">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <span
-                        className={`w-2 h-2 rounded-full ${
-                          monitor.status === "active" ? "bg-[#F5A623] animate-pulse" : "bg-[#8A93A6]"
-                        }`}
-                      />
-                      <span className="text-xs font-mono text-[#8A93A6] uppercase">{monitor.sourceType}</span>
-                      <span className="text-xs font-mono text-[#8A93A6]">{monitor.status}</span>
+                  <Link href={`/monitors/${monitor.id}`} className="group min-w-0 flex-1">
+                    <div className="mb-1.5 flex items-center gap-2">
+                      <span className={`h-2 w-2 rounded-full ${monitor.status === "active" ? "bg-white/70" : "bg-white/20"}`} />
+                      <span className="text-xs uppercase text-white/40">{monitor.sourceType}</span>
+                      <span className="text-xs text-white/40">{monitor.status}</span>
                     </div>
-                    <p className="text-sm font-mono text-[#E7EAF0] truncate group-hover:text-[#F5A623] transition-colors">
-                      {monitor.url}
-                    </p>
-                    <p className="text-sm text-[#8A93A6] mt-1">{monitor.condition}</p>
+                    <p className="truncate text-sm text-white transition-colors group-hover:text-white/70">{monitor.url}</p>
+                    <p className="mt-1 text-sm text-white/50">{monitor.condition}</p>
                   </Link>
-                  <div className="flex flex-col gap-2 shrink-0">
+                  <div className="flex shrink-0 flex-col gap-2">
                     <button
                       onClick={() => handleCheckNow(monitor.id)}
                       disabled={checkingId === monitor.id}
-                      className="rounded-md border border-[#232A3D] text-xs font-medium px-3 py-1.5 hover:border-[#F5A623] hover:text-[#F5A623] transition-colors disabled:opacity-50"
+                      className="liquid-glass rounded-full px-3 py-1.5 text-xs font-medium text-white transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
                     >
-                      {checkingId === monitor.id ? "Checking…" : "Check now"}
+                      {checkingId === monitor.id ? "Checking..." : "Check now"}
                     </button>
-                    <div className="flex gap-2 justify-end">
-                      <button onClick={() => handleTogglePause(monitor)} className="text-xs text-[#8A93A6] hover:text-[#E7EAF0]">
+                    <div className="flex justify-end gap-2">
+                      <button onClick={() => handleTogglePause(monitor)} className="text-xs text-white/50 hover:text-white">
                         {monitor.status === "active" ? "Pause" : "Resume"}
                       </button>
-                      <button onClick={() => handleDelete(monitor.id)} className="text-xs text-[#8A93A6] hover:text-[#F87171]">
+                      <button onClick={() => handleDelete(monitor.id)} className="text-xs text-white/50 hover:text-white">
                         Delete
                       </button>
                     </div>
@@ -204,7 +202,7 @@ export default function DashboardPage() {
             ))}
           </div>
         )}
-      </main>
+      </div>
     </div>
   );
-}
+} 

@@ -47,85 +47,66 @@ export default function MonitorDetailPage() {
   }
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-[#0B0E14] text-[#8A93A6] flex items-center justify-center font-mono text-sm">
-        Loading...
-      </div>
-    );
+    return <div className="flex min-h-screen items-center justify-center text-sm text-white/50">Loading...</div>;
   }
 
   if (error || !monitor) {
-    return (
-      <div className="min-h-screen bg-[#0B0E14] flex items-center justify-center">
-        <p className="text-[#F87171] text-sm">{error || "Monitor not found"}</p>
-      </div>
-    );
+    return <div className="flex min-h-screen items-center justify-center text-sm text-white/90">Error: {error || "Monitor not found"}</div>;
   }
 
   return (
-    <div className="min-h-screen bg-[#0B0E14] text-[#E7EAF0]">
-      <header className="border-b border-[#232A3D] px-6 py-4">
-        <Link href="/dashboard" className="text-sm text-[#8A93A6] hover:text-[#E7EAF0]">Back</Link>
-      </header>
+    <div className="min-h-screen px-4 py-8 md:px-8 md:py-10">
+      <div className="mx-auto max-w-2xl">
+        <Link href="/dashboard" className="text-sm text-white/50 hover:text-white">
+          Back
+        </Link>
 
-      <main className="max-w-2xl mx-auto px-6 py-10">
-        <div className="flex items-center gap-2 mb-2">
-          <span
-            className={`w-2 h-2 rounded-full ${
-              monitor.status === "active" ? "bg-[#F5A623] animate-pulse" : "bg-[#8A93A6]"
-            }`}
-          />
-          <span className="text-xs font-mono text-[#8A93A6] uppercase">{monitor.sourceType}</span>
-          <span className="text-xs font-mono text-[#8A93A6]">{monitor.status}</span>
+        <div className="mt-6 mb-2 flex items-center gap-2">
+          <span className={`h-2 w-2 rounded-full ${monitor.status === "active" ? "bg-white/70" : "bg-white/20"}`} />
+          <span className="text-xs uppercase text-white/40">{monitor.sourceType}</span>
+          <span className="text-xs text-white/40">{monitor.status}</span>
         </div>
-        <p className="font-mono text-sm text-[#E7EAF0] break-all mb-1">{monitor.url}</p>
-        <p className="text-[#8A93A6] mb-6">{monitor.condition}</p>
+        <p className="mb-1 break-all text-sm text-white">{monitor.url}</p>
+        <p className="mb-6 text-white/60">{monitor.condition}</p>
 
-        <div className="flex gap-3 mb-8">
+        <div className="mb-8 flex flex-wrap gap-3">
           <button
             onClick={handleCheckNow}
             disabled={checking}
-            className="rounded-md bg-[#F5A623] text-[#0B0E14] font-medium text-sm px-4 py-2 hover:bg-[#f0ad3d] transition-colors disabled:opacity-60"
+            className="liquid-glass-strong rounded-full px-5 py-2.5 text-sm font-medium text-white transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
           >
             {checking ? "Checking..." : "Check now"}
           </button>
-          <button
-            onClick={handleDelete}
-            className="rounded-md border border-[#232A3D] text-sm px-4 py-2 text-[#8A93A6] hover:text-[#F87171] hover:border-[#F87171]/40 transition-colors"
-          >
-            Delete
-          </button>
-          <Link href={`/monitors/${params.id}/edit`} className="rounded-md border border-[#232A3D] text-sm px-4 py-2 text-[#8A93A6] hover:text-[#F5A623] hover:border-[#F5A623]/40 transition-colors">
+          <Link href={`/monitors/${params.id}/edit`} className="liquid-glass rounded-full px-5 py-2.5 text-sm text-white/70 transition-colors hover:text-white">
             Edit
           </Link>
+          <button onClick={handleDelete} className="liquid-glass rounded-full px-5 py-2.5 text-sm text-white/70 transition-colors hover:text-white">
+            Delete
+          </button>
         </div>
 
-        <h2 className="text-xs font-mono text-[#8A93A6] uppercase tracking-wide mb-3">Check history</h2>
+        <h2 className="mb-3 text-xs uppercase tracking-widest text-white/40">Check history</h2>
 
         {monitor.checkLogs.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-[#232A3D] px-5 py-8 text-center">
-            <p className="text-sm text-[#8A93A6]">No checks yet. Run one to see it here.</p>
+          <div className="liquid-glass rounded-2xl px-5 py-8 text-center">
+            <p className="text-sm text-white/50">No checks yet. Run one to see it here.</p>
           </div>
         ) : (
-          <div className="rounded-lg border border-[#232A3D] bg-[#131826] divide-y divide-[#232A3D] overflow-hidden">
+          <div className="liquid-glass divide-y divide-white/[0.06] overflow-hidden rounded-2xl">
             {monitor.checkLogs.map((log) => (
-              <div key={log.id} className="px-4 py-3 font-mono text-xs">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-[#8A93A6]">{new Date(log.checkedAt).toLocaleString()}</span>
-                  <span
-                    className={`px-1.5 py-0.5 rounded text-[10px] uppercase tracking-wide ${
-                      log.aiVerdict ? "bg-[#34D399]/15 text-[#34D399]" : "bg-[#232A3D] text-[#8A93A6]"
-                    }`}
-                  >
+              <div key={log.id} className="px-4 py-3 text-xs">
+                <div className="mb-1 flex items-center gap-2">
+                  <span className="text-white/40">{new Date(log.checkedAt).toLocaleString()}</span>
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wide ${log.aiVerdict ? "bg-white/15 text-white" : "bg-white/5 text-white/40"}`}>
                     {log.aiVerdict ? "Met" : "Not met"}
                   </span>
                 </div>
-                <p className="text-[#E7EAF0] font-sans text-sm">{log.aiReasoning}</p>
+                <p className="text-sm text-white/80">{log.aiReasoning}</p>
               </div>
             ))}
           </div>
         )}
-      </main>
+      </div>
     </div>
   );
 }

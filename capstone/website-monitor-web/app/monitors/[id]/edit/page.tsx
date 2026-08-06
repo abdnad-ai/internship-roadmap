@@ -51,27 +51,97 @@ export default function EditMonitorPage() {
     }
   }
 
-  if (loading) return <div className="min-h-screen bg-[#0B0E14] text-[#8A93A6] flex items-center justify-center font-mono text-sm">Loading...</div>;
+  if (loading) {
+    return <div className="flex min-h-screen items-center justify-center text-sm text-white/50">Loading...</div>;
+  }
 
   return (
-    <div className="min-h-screen bg-[#0B0E14] text-[#E7EAF0]">
-      <header className="border-b border-[#232A3D] px-6 py-4"><Link href={`/monitors/${params.id}`} className="text-sm text-[#8A93A6] hover:text-[#E7EAF0]">Back</Link></header>
-      <main className="max-w-lg mx-auto px-6 py-10">
-        <h1 className="text-xl font-semibold tracking-tight mb-1">Edit monitor</h1>
-        <p className="text-sm text-[#8A93A6] mb-8">Update what Watchpost should look for.</p>
-        <form onSubmit={handleSubmit} className="space-y-5">
+    <div className="min-h-screen px-4 py-8 md:px-8 md:py-10">
+      <div className="mx-auto max-w-lg">
+        <Link href={`/monitors/${params.id}`} className="text-sm text-white/50 hover:text-white">
+          Back
+        </Link>
+
+        <h1 className="mt-6 text-4xl tracking-[-0.03em] text-white">
+          Edit{" "}
+          <span className="font-[family-name:var(--font-source-serif)] italic text-white/80">monitor</span>
+        </h1>
+        <p className="mt-2 mb-8 text-sm text-white/50">Update what watchpost should look for.</p>
+
+        <form onSubmit={handleSubmit} className="liquid-glass-strong space-y-5 rounded-3xl p-6 md:p-8">
           <div>
-            <label className="block text-xs font-mono text-[#8A93A6] mb-1.5">SOURCE TYPE</label>
-            <div className="flex gap-2">{(["webpage", "api"] as const).map((type) => <button key={type} type="button" onClick={() => setSourceType(type)} className={`px-3 py-1.5 rounded-md text-sm border ${sourceType === type ? "border-[#F5A623] text-[#F5A623] bg-[#F5A623]/10" : "border-[#232A3D] text-[#8A93A6]"}`}>{type === "webpage" ? "Webpage" : "API endpoint"}</button>)}</div>
+            <label className="mb-1.5 block text-xs uppercase tracking-widest text-white/40">Source type</label>
+            <div className="flex gap-2">
+              {(["webpage", "api"] as const).map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setSourceType(type)}
+                  className={`liquid-glass rounded-full px-4 py-2 text-sm transition-colors ${
+                    sourceType === type ? "text-white" : "text-white/40"
+                  }`}
+                >
+                  {type === "webpage" ? "Webpage" : "API endpoint"}
+                </button>
+              ))}
+            </div>
           </div>
-          <div><label className="block text-xs font-mono text-[#8A93A6] mb-1.5">URL</label><input type="url" required value={url} onChange={(event) => setUrl(event.target.value)} className="w-full rounded-md bg-[#131826] border border-[#232A3D] px-3 py-2 text-[#E7EAF0] text-sm font-mono focus:outline-none focus:ring-2 focus:ring-[#F5A623]/50 focus:border-[#F5A623]" /></div>
-          <div><label className="block text-xs font-mono text-[#8A93A6] mb-1.5">CONDITION TO WATCH FOR</label><textarea required rows={3} value={condition} onChange={(event) => setCondition(event.target.value)} className="w-full rounded-md bg-[#131826] border border-[#232A3D] px-3 py-2 text-[#E7EAF0] text-sm focus:outline-none focus:ring-2 focus:ring-[#F5A623]/50 focus:border-[#F5A623] resize-none" /></div>
-          <label className="flex items-center gap-2 text-sm text-[#8A93A6]"><input type="checkbox" checked={notifyByEmail} onChange={(event) => setNotifyByEmail(event.target.checked)} className="rounded border-[#232A3D] bg-[#131826] accent-[#F5A623]" />Email me when the condition is met</label>
-          <div><label className="block text-xs font-mono text-[#8A93A6] mb-1.5">STATUS</label><select value={status} onChange={(event) => setStatus(event.target.value)} className="w-full rounded-md bg-[#131826] border border-[#232A3D] px-3 py-2 text-[#E7EAF0] text-sm"><option value="active">Active</option><option value="paused">Paused</option></select></div>
-          {error && <p className="text-sm text-[#F87171]">{error}</p>}
-          <button type="submit" disabled={saving} className="w-full rounded-md bg-[#F5A623] text-[#0B0E14] font-medium text-sm py-2.5 hover:bg-[#f0ad3d] transition-colors disabled:opacity-60">{saving ? "Saving..." : "Save changes"}</button>
+
+          <div>
+            <label className="mb-1.5 block text-xs uppercase tracking-widest text-white/40">URL</label>
+            <input
+              type="url"
+              required
+              value={url}
+              onChange={(event) => setUrl(event.target.value)}
+              className="liquid-glass w-full rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
+            />
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-xs uppercase tracking-widest text-white/40">Condition to watch for</label>
+            <textarea
+              required
+              rows={3}
+              value={condition}
+              onChange={(event) => setCondition(event.target.value)}
+              className="liquid-glass w-full resize-none rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
+            />
+          </div>
+
+          <label className="flex items-center gap-2 text-sm text-white/60">
+            <input
+              type="checkbox"
+              checked={notifyByEmail}
+              onChange={(event) => setNotifyByEmail(event.target.checked)}
+              className="accent-white/70"
+            />
+            Email me when the condition is met
+          </label>
+
+          <div>
+            <label className="mb-1.5 block text-xs uppercase tracking-widest text-white/40">Status</label>
+            <select
+              value={status}
+              onChange={(event) => setStatus(event.target.value)}
+              className="liquid-glass w-full rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
+            >
+              <option value="active" className="bg-black">Active</option>
+              <option value="paused" className="bg-black">Paused</option>
+            </select>
+          </div>
+
+          {error && <p className="text-sm text-white/90">Error: {error}</p>}
+
+          <button
+            type="submit"
+            disabled={saving}
+            className="liquid-glass-strong w-full rounded-full py-3 text-sm font-medium text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+          >
+            {saving ? "Saving..." : "Save changes"}
+          </button>
         </form>
-      </main>
+      </div>
     </div>
   );
 }
