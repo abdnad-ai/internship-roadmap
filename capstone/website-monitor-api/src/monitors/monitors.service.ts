@@ -159,7 +159,11 @@ export class MonitorsService {
     for (const monitor of activeMonitors) {
       try {
         const result = await this.runCheck(monitor);
-        results.push({ monitorId: monitor.id, ...result });
+        results.push({
+          monitorId: monitor.id,
+          met: result.met,
+          notified: result.notification !== null,
+        });
       } catch (error) {
         results.push({
           monitorId: monitor.id,
