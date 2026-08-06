@@ -98,7 +98,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/monitors/new"
-              className="liquid-glass-strong rounded-full bg-[#F5A623]/15 px-5 py-2.5 text-sm font-medium text-[#F5A623] transition-transform hover:scale-105 active:scale-95"
+              className="rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition-opacity hover:opacity-90"
             >
               + New monitor
             </Link>
@@ -108,18 +108,18 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        <h1 className="text-4xl tracking-[-0.03em] text-white">
+        <h1 className="text-5xl font-medium tracking-[-2px] text-white">
           Your{" "}
-          <span className="font-[family-name:var(--font-source-serif)] italic text-white/80">monitors</span>
+          <span className="font-[family-name:var(--font-instrument-serif)] italic font-normal text-white/80">monitors</span>
         </h1>
-        <p className="mt-2 mb-10 text-sm text-white/50">Watching the web so you do not have to.</p>
+        <p className="mt-3 mb-10 text-sm text-white/65">Watching the web so you do not have to.</p>
 
         {notifications.length > 0 && (
-          <section className="liquid-glass mb-8 overflow-hidden rounded-2xl">
+          <section className="liquid-glass mb-8 overflow-hidden rounded-2xl bg-white/[0.02]">
             <div className="flex items-center justify-between px-5 py-3">
               <h2 className="text-xs uppercase tracking-widest text-white/40">Alerts</h2>
               <div className="flex items-center gap-4">
-                <span className="text-xs text-white/60">{unreadCount} unread</span>
+                <span className="text-xs text-white/65">{unreadCount} unread</span>
                 {unreadCount > 0 && (
                   <button
                     onClick={() => void handleMarkAllRead()}
@@ -130,7 +130,7 @@ export default function DashboardPage() {
                 )}
               </div>
             </div>
-            <div className="divide-y divide-white/[0.06]">
+            <div className="divide-y divide-white/[0.08]">
               {notifications.slice(0, 5).map((notification) => (
                 <div key={notification.id} className={`px-5 py-3 text-sm ${notification.read ? "text-white/40" : "text-white/90"}`}>
                   <div className="flex items-start justify-between gap-4">
@@ -154,20 +154,20 @@ export default function DashboardPage() {
         )}
 
         {error && (
-          <div className="liquid-glass mb-6 rounded-xl px-4 py-3 text-sm text-[#F87171]">
+          <div className="liquid-glass mb-6 rounded-xl bg-white/[0.02] px-4 py-3 text-sm text-[#F87171]">
             Error: {error}
           </div>
         )}
 
         {loading ? (
-          <p className="text-sm text-white/50">Loading monitors...</p>
+          <p className="text-sm text-white/65">Loading monitors...</p>
         ) : monitors.length === 0 ? (
-          <div className="liquid-glass rounded-2xl px-6 py-12 text-center">
+          <div className="liquid-glass rounded-2xl bg-white/[0.02] px-6 py-12 text-center">
             <p className="mb-1 font-medium text-white">Nothing being watched yet</p>
-            <p className="mb-5 text-sm text-white/50">Add a URL and describe what you are waiting for.</p>
+            <p className="mb-5 text-sm text-white/65">Add a URL and describe what you are waiting for.</p>
             <Link
               href="/monitors/new"
-              className="liquid-glass-strong inline-block rounded-full bg-[#F5A623]/15 px-5 py-2.5 text-sm font-medium text-[#F5A623] transition-transform hover:scale-105 active:scale-95"
+              className="inline-block rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black transition-opacity hover:opacity-90"
             >
               Create your first monitor
             </Link>
@@ -175,7 +175,7 @@ export default function DashboardPage() {
         ) : (
           <div className="space-y-3">
             {monitors.map((monitor) => (
-              <div key={monitor.id} className="liquid-glass rounded-2xl px-5 py-4">
+              <div key={monitor.id} className="liquid-glass rounded-2xl bg-white/[0.02] px-5 py-4">
                 <div className="flex items-start justify-between gap-4">
                   <Link href={`/monitors/${monitor.id}`} className="group min-w-0 flex-1">
                     <div className="mb-1.5 flex items-center gap-2">
@@ -184,7 +184,7 @@ export default function DashboardPage() {
                       <span className="text-xs text-white/40">{monitor.status}</span>
                     </div>
                     <p className="truncate text-sm text-white transition-colors group-hover:text-white/70">{monitor.url}</p>
-                    <p className="mt-1 text-sm text-white/50">{monitor.condition}</p>
+                    <p className="mt-1 text-sm text-white/65">{monitor.condition}</p>
                   </Link>
                   <div className="flex shrink-0 flex-col gap-2">
                     <button
@@ -195,7 +195,7 @@ export default function DashboardPage() {
                       {checkingId === monitor.id ? "Checking..." : "Check now"}
                     </button>
                     <div className="flex justify-end gap-2">
-                      <button onClick={() => handleTogglePause(monitor)} className="text-xs text-white/50 hover:text-white">
+                      <button onClick={() => handleTogglePause(monitor)} className="text-xs text-white/65 hover:text-white">
                         {monitor.status === "active" ? "Pause" : "Resume"}
                       </button>
                       <button onClick={() => handleDelete(monitor.id)} className="text-xs text-[#F87171]/80 hover:text-[#F87171]">
@@ -211,4 +211,4 @@ export default function DashboardPage() {
       </div>
     </div>
   );
-}
+} 

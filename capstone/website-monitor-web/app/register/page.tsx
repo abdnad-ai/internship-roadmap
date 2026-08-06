@@ -28,17 +28,17 @@ export default function RegisterPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4 py-12">
-      <div className="liquid-glass-strong w-full max-w-md rounded-3xl p-8 md:p-10">
+      <div className="liquid-glass w-full max-w-md rounded-2xl bg-white/[0.02] p-8 md:p-10">
         <div className="mb-8 flex items-center gap-2">
           <span className="h-2.5 w-2.5 rounded-full bg-white/70" />
-          <span className="text-sm font-medium tracking-wide text-white/60">watchpost</span>
+          <span className="text-sm font-medium tracking-wide text-white/65">watchpost</span>
         </div>
 
-        <h1 className="text-4xl tracking-[-0.03em] text-white">
+        <h1 className="text-4xl font-medium tracking-[-1.5px] text-white">
           Start{" "}
-          <span className="font-[family-name:var(--font-source-serif)] italic text-white/80">watching</span>
+          <span className="font-[family-name:var(--font-instrument-serif)] italic font-normal text-white/80">watching</span>
         </h1>
-        <p className="mt-2 text-sm text-white/50">Create an account to watch the web for what matters.</p>
+        <p className="mt-3 text-sm text-white/65">Create an account to watch the web for what matters.</p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div>
@@ -48,7 +48,7 @@ export default function RegisterPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="liquid-glass w-full rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none"
+              className="w-full rounded-lg border border-white/20 bg-transparent px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/40"
             />
           </div>
           <div>
@@ -59,22 +59,22 @@ export default function RegisterPage() {
               minLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="liquid-glass w-full rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none"
+              className="w-full rounded-lg border border-white/20 bg-transparent px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-white/40"
             />
           </div>
 
-          {error && <p className="text-sm text-white/70">{error}</p>}
+          {error && <p className="text-sm text-[#F87171]">{error}</p>}
 
           <button
             type="submit"
             disabled={loading}
-            className="liquid-glass-strong mt-2 w-full rounded-full py-3 text-sm font-medium text-white transition-transform hover:scale-[1.02] active:scale-95 disabled:opacity-50"
+            className="mt-2 w-full rounded-full bg-white py-3 text-sm font-medium text-black transition-opacity hover:opacity-90 disabled:opacity-50"
           >
             {loading ? "Creating..." : "Create account"}
           </button>
         </form>
 
-        <p className="mt-6 text-center text-sm text-white/50">
+        <p className="mt-6 text-center text-sm text-white/65">
           Already have one?{" "}
           <Link href="/login" className="text-white hover:underline">
             Sign in
@@ -83,4 +83,4 @@ export default function RegisterPage() {
       </div>
     </div>
   );
-}
+} 

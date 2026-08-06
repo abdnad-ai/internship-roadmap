@@ -1,18 +1,18 @@
 ﻿ import type { Metadata } from "next";
-import { Poppins, Source_Serif_4 } from "next/font/google";
+import { Inter, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
-const poppins = Poppins({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-poppins",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
 });
 
-const sourceSerif = Source_Serif_4({
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   weight: ["400"],
-  style: ["italic"],
-  variable: "--font-source-serif",
+  style: ["italic", "normal"],
+  variable: "--font-instrument-serif",
 });
 
 export const metadata: Metadata = {
@@ -22,11 +22,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={poppins.variable + " " + sourceSerif.variable}>
-      <body className="antialiased font-[family-name:var(--font-poppins)]">
+    <html lang="en" className={inter.variable + " " + instrumentSerif.variable}>
+      <body className="antialiased font-[family-name:var(--font-inter)]">
         <div className="ambient-bg" aria-hidden="true" />
         <div className="relative z-10">{children}</div>
       </body>
     </html>
   );
-}
+} 

@@ -47,7 +47,7 @@ export default function MonitorDetailPage() {
   }
 
   if (loading) {
-    return <div className="flex min-h-screen items-center justify-center text-sm text-white/50">Loading...</div>;
+    return <div className="flex min-h-screen items-center justify-center text-sm text-white/65">Loading...</div>;
   }
 
   if (error || !monitor) {
@@ -57,7 +57,7 @@ export default function MonitorDetailPage() {
   return (
     <div className="min-h-screen px-4 py-8 md:px-8 md:py-10">
       <div className="mx-auto max-w-2xl">
-        <Link href="/dashboard" className="text-sm text-white/50 hover:text-white">
+        <Link href="/dashboard" className="text-sm text-white/65 hover:text-white">
           Back
         </Link>
 
@@ -67,25 +67,25 @@ export default function MonitorDetailPage() {
           <span className="text-xs text-white/40">{monitor.status}</span>
         </div>
         <p className="mb-1 break-all text-sm text-white">{monitor.url}</p>
-        <p className="mb-6 text-white/60">{monitor.condition}</p>
+        <p className="mb-6 text-white/65">{monitor.condition}</p>
 
         <div className="mb-8 flex flex-wrap gap-3">
           <button
             onClick={handleCheckNow}
             disabled={checking}
-            className="liquid-glass-strong rounded-full bg-[#34D399]/15 px-5 py-2.5 text-sm font-medium text-[#34D399] transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+            className="rounded-full bg-[#34D399]/15 px-5 py-2.5 text-sm font-medium text-[#34D399] transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
           >
             {checking ? "Checking..." : "Check now"}
           </button>
           <Link
             href={`/monitors/${params.id}/edit`}
-            className="liquid-glass rounded-full bg-[#A78BFA]/15 px-5 py-2.5 text-sm font-medium text-[#A78BFA] transition-colors hover:bg-[#A78BFA]/25"
+            className="rounded-full bg-[#A78BFA]/15 px-5 py-2.5 text-sm font-medium text-[#A78BFA] transition-colors hover:bg-[#A78BFA]/25"
           >
             Edit
           </Link>
           <button
             onClick={handleDelete}
-            className="liquid-glass rounded-full bg-[#F87171]/15 px-5 py-2.5 text-sm font-medium text-[#F87171] transition-colors hover:bg-[#F87171]/25"
+            className="rounded-full bg-[#F87171]/15 px-5 py-2.5 text-sm font-medium text-[#F87171] transition-colors hover:bg-[#F87171]/25"
           >
             Delete
           </button>
@@ -94,11 +94,11 @@ export default function MonitorDetailPage() {
         <h2 className="mb-3 text-xs uppercase tracking-widest text-white/40">Check history</h2>
 
         {monitor.checkLogs.length === 0 ? (
-          <div className="liquid-glass rounded-2xl px-5 py-8 text-center">
-            <p className="text-sm text-white/50">No checks yet. Run one to see it here.</p>
+          <div className="liquid-glass rounded-2xl bg-white/[0.02] px-5 py-8 text-center">
+            <p className="text-sm text-white/65">No checks yet. Run one to see it here.</p>
           </div>
         ) : (
-          <div className="liquid-glass divide-y divide-white/[0.06] overflow-hidden rounded-2xl">
+          <div className="liquid-glass divide-y divide-white/[0.08] overflow-hidden rounded-2xl bg-white/[0.02]">
             {monitor.checkLogs.map((log) => (
               <div key={log.id} className="px-4 py-3 text-xs">
                 <div className="mb-1 flex items-center gap-2">
