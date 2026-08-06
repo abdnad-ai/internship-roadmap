@@ -28,4 +28,12 @@ export class NotificationsService {
       data: { read: true },
     });
   }
+
+  async markAllRead(userId: string) {
+    const result = await this.prisma.notification.updateMany({
+      where: { monitor: { userId }, read: false },
+      data: { read: true },
+    });
+    return { updated: result.count };
+  }
 }

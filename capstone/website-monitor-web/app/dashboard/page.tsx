@@ -76,6 +76,17 @@ export default function DashboardPage() {
     }
   }
 
+  async function handleMarkAllRead() {
+    try {
+      await api.markAllNotificationsRead();
+      setNotifications((items) => items.map((item) => ({ ...item, read: true })));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to update notifications");
+    }
+  }
+
+  const unreadCount = notifications.filter((item) => !item.read).length;
+
   return (
     <div className="min-h-screen bg-[#0B0E14] text-[#E7EAF0]">
       <header className="border-b border-[#232A3D] px-6 py-4 flex items-center justify-between">
@@ -104,7 +115,17 @@ export default function DashboardPage() {
           <section className="rounded-lg border border-[#232A3D] bg-[#131826] mb-8 overflow-hidden">
             <div className="flex items-center justify-between px-5 py-3 border-b border-[#232A3D]">
               <h2 className="text-xs font-mono uppercase tracking-wide text-[#8A93A6]">Alerts</h2>
-              <span className="text-xs font-mono text-[#F5A623]">{notifications.filter((item) => !item.read).length} unread</span>
+              <div className="flex items-center gap-4">
+                <span className="text-xs font-mono text-[#F5A623]">{unreadCount} unread</span>
+                {unreadCount > 0 && (
+                  <button
+                    onClick={() => void handleMarkAllRead()}
+                    className="text-xs text-[#8A93A6] hover:text-[#E7EAF0] hover:underline"
+                  >
+                    Mark all read
+                  </button>
+                )}
+              </div>
             </div>
             <div className="divide-y divide-[#232A3D]">
               {notifications.slice(0, 5).map((notification) => (

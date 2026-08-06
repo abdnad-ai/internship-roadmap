@@ -114,4 +114,6 @@ export const api = {
   getNotifications: (): Promise<MonitorNotification[]> => apiFetch("/notifications"),
   markNotificationRead: (id: string): Promise<MonitorNotification | null> =>
     apiFetch(`/notifications/${id}/read`, { method: "PATCH" }),
+  markAllNotificationsRead: (): Promise<{ updated: number }> =>
+    apiFetch("/notifications/read-all", { method: "PATCH" }),
 };
