@@ -51,7 +51,7 @@ export default function MonitorDetailPage() {
   }
 
   if (error || !monitor) {
-    return <div className="flex min-h-screen items-center justify-center text-sm text-white/90">Error: {error || "Monitor not found"}</div>;
+    return <div className="flex min-h-screen items-center justify-center text-sm text-[#F87171]">Error: {error || "Monitor not found"}</div>;
   }
 
   return (
@@ -73,14 +73,20 @@ export default function MonitorDetailPage() {
           <button
             onClick={handleCheckNow}
             disabled={checking}
-            className="liquid-glass-strong rounded-full px-5 py-2.5 text-sm font-medium text-white transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+            className="liquid-glass-strong rounded-full bg-[#34D399]/15 px-5 py-2.5 text-sm font-medium text-[#34D399] transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
           >
             {checking ? "Checking..." : "Check now"}
           </button>
-          <Link href={`/monitors/${params.id}/edit`} className="liquid-glass rounded-full px-5 py-2.5 text-sm text-white/70 transition-colors hover:text-white">
+          <Link
+            href={`/monitors/${params.id}/edit`}
+            className="liquid-glass rounded-full bg-[#A78BFA]/15 px-5 py-2.5 text-sm font-medium text-[#A78BFA] transition-colors hover:bg-[#A78BFA]/25"
+          >
             Edit
           </Link>
-          <button onClick={handleDelete} className="liquid-glass rounded-full px-5 py-2.5 text-sm text-white/70 transition-colors hover:text-white">
+          <button
+            onClick={handleDelete}
+            className="liquid-glass rounded-full bg-[#F87171]/15 px-5 py-2.5 text-sm font-medium text-[#F87171] transition-colors hover:bg-[#F87171]/25"
+          >
             Delete
           </button>
         </div>
@@ -97,7 +103,7 @@ export default function MonitorDetailPage() {
               <div key={log.id} className="px-4 py-3 text-xs">
                 <div className="mb-1 flex items-center gap-2">
                   <span className="text-white/40">{new Date(log.checkedAt).toLocaleString()}</span>
-                  <span className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wide ${log.aiVerdict ? "bg-white/15 text-white" : "bg-white/5 text-white/40"}`}>
+                  <span className={`rounded-full px-2 py-0.5 text-[10px] uppercase tracking-wide ${log.aiVerdict ? "bg-[#34D399]/15 text-[#34D399]" : "bg-white/5 text-white/40"}`}>
                     {log.aiVerdict ? "Met" : "Not met"}
                   </span>
                 </div>

@@ -98,7 +98,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-3">
             <Link
               href="/monitors/new"
-              className="liquid-glass-strong rounded-full px-5 py-2.5 text-sm font-medium text-white transition-transform hover:scale-105 active:scale-95"
+              className="liquid-glass-strong rounded-full bg-[#F5A623]/15 px-5 py-2.5 text-sm font-medium text-[#F5A623] transition-transform hover:scale-105 active:scale-95"
             >
               + New monitor
             </Link>
@@ -121,7 +121,10 @@ export default function DashboardPage() {
               <div className="flex items-center gap-4">
                 <span className="text-xs text-white/60">{unreadCount} unread</span>
                 {unreadCount > 0 && (
-                  <button onClick={() => void handleMarkAllRead()} className="text-xs text-white/50 transition-colors hover:text-white hover:underline">
+                  <button
+                    onClick={() => void handleMarkAllRead()}
+                    className="rounded-full bg-[#60A5FA]/15 px-3 py-1 text-xs font-medium text-[#60A5FA] transition-colors hover:bg-[#60A5FA]/25"
+                  >
                     Mark all read
                   </button>
                 )}
@@ -136,7 +139,10 @@ export default function DashboardPage() {
                       <p className="mt-1 text-xs text-white/40">{new Date(notification.createdAt).toLocaleString()}</p>
                     </Link>
                     {!notification.read && (
-                      <button onClick={() => void handleMarkRead(notification.id)} className="shrink-0 text-xs text-white/60 hover:text-white hover:underline">
+                      <button
+                        onClick={() => void handleMarkRead(notification.id)}
+                        className="shrink-0 rounded-full bg-[#60A5FA]/15 px-3 py-1 text-xs font-medium text-[#60A5FA] transition-colors hover:bg-[#60A5FA]/25"
+                      >
                         Mark read
                       </button>
                     )}
@@ -148,7 +154,7 @@ export default function DashboardPage() {
         )}
 
         {error && (
-          <div className="liquid-glass mb-6 rounded-xl px-4 py-3 text-sm text-white/90">
+          <div className="liquid-glass mb-6 rounded-xl px-4 py-3 text-sm text-[#F87171]">
             Error: {error}
           </div>
         )}
@@ -161,7 +167,7 @@ export default function DashboardPage() {
             <p className="mb-5 text-sm text-white/50">Add a URL and describe what you are waiting for.</p>
             <Link
               href="/monitors/new"
-              className="liquid-glass-strong inline-block rounded-full px-5 py-2.5 text-sm font-medium text-white transition-transform hover:scale-105 active:scale-95"
+              className="liquid-glass-strong inline-block rounded-full bg-[#F5A623]/15 px-5 py-2.5 text-sm font-medium text-[#F5A623] transition-transform hover:scale-105 active:scale-95"
             >
               Create your first monitor
             </Link>
@@ -184,7 +190,7 @@ export default function DashboardPage() {
                     <button
                       onClick={() => handleCheckNow(monitor.id)}
                       disabled={checkingId === monitor.id}
-                      className="liquid-glass rounded-full px-3 py-1.5 text-xs font-medium text-white transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
+                      className="rounded-full bg-[#34D399]/15 px-3 py-1.5 text-xs font-medium text-[#34D399] transition-transform hover:scale-105 active:scale-95 disabled:opacity-50"
                     >
                       {checkingId === monitor.id ? "Checking..." : "Check now"}
                     </button>
@@ -192,7 +198,7 @@ export default function DashboardPage() {
                       <button onClick={() => handleTogglePause(monitor)} className="text-xs text-white/50 hover:text-white">
                         {monitor.status === "active" ? "Pause" : "Resume"}
                       </button>
-                      <button onClick={() => handleDelete(monitor.id)} className="text-xs text-white/50 hover:text-white">
+                      <button onClick={() => handleDelete(monitor.id)} className="text-xs text-[#F87171]/80 hover:text-[#F87171]">
                         Delete
                       </button>
                     </div>
@@ -205,4 +211,4 @@ export default function DashboardPage() {
       </div>
     </div>
   );
-} 
+}
