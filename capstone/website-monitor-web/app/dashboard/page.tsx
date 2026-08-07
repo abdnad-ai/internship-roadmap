@@ -37,13 +37,13 @@ export default function DashboardPage() {
     setCheckingId(id);
     try {
       await api.checkMonitor(id);
-      await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Check failed");
     } finally {
       setCheckingId(null);
     }
-  }
+    void load();
+  }  
 
   async function handleTogglePause(monitor: Monitor) {
     const nextStatus = monitor.status === "active" ? "paused" : "active";

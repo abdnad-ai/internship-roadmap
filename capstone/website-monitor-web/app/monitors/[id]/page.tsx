@@ -32,12 +32,12 @@ export default function MonitorDetailPage() {
     setChecking(true);
     try {
       await api.checkMonitor(params.id);
-      await load();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Check failed");
     } finally {
       setChecking(false);
     }
+    void load();
   }
 
   async function handleDelete() {
