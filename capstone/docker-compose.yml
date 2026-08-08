@@ -23,7 +23,7 @@ services:
       JWT_REFRESH_EXPIRES: 7d
       CRON_SECRET: ${CRON_SECRET:-local-demo-cron-secret}
       FRONTEND_URL: http://localhost:3000
-      AI_PROVIDER: mock
+      AI_PROVIDER: ${AI_PROVIDER:-mock}
       GEMINI_API_KEY: ${GEMINI_API_KEY:-}
       VERTEX_AI_PROJECT_ID: ${VERTEX_AI_PROJECT_ID:-}
       VERTEX_AI_LOCATION: ${VERTEX_AI_LOCATION:-us-central1}
