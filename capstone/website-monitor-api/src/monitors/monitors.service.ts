@@ -182,6 +182,12 @@ export class MonitorsService {
 
     const verdict = await this.judgeCondition(content, monitor.condition);
 
+    const previousLog = await this.prisma.checkLog.findFirst({
+      where: { monitorId: monitor.id },
+      orderBy: { checkedAt: 'desc' },
+    });
+    const wasAlreadyMet = previousLog?.aiVerdict === true;
+
     const checkLog = await this.prisma.checkLog.create({
       data: {
         monitorId: monitor.id,
@@ -192,7 +198,7 @@ export class MonitorsService {
     });
 
     let notification: Notification | null = null;
-    if (verdict.met) {
+    if (verdict.met && !wasAlreadyMet) {
       notification = await this.prisma.notification.create({
         data: {
           monitorId: monitor.id,
