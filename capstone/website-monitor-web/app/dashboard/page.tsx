@@ -11,6 +11,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [checkingId, setCheckingId] = useState<string | null>(null);
+  const [lastResults, setLastResults] = useState<Record<string, { met: boolean; reasoning: string }>>({});
 
   const load = useCallback(async () => {
     try {
@@ -36,14 +37,15 @@ export default function DashboardPage() {
   async function handleCheckNow(id: string) {
     setCheckingId(id);
     try {
-      await api.checkMonitor(id);
+      const result = await api.checkMonitor(id);
+      setLastResults((prev) => ({ ...prev, [id]: { met: result.met, reasoning: result.checkLog.aiReasoning } }));
     } catch (err) {
       setError(err instanceof Error ? err.message : "Check failed");
     } finally {
       setCheckingId(null);
     }
     void load();
-  }  
+  }
 
   async function handleTogglePause(monitor: Monitor) {
     const nextStatus = monitor.status === "active" ? "paused" : "active";
@@ -185,6 +187,12 @@ export default function DashboardPage() {
                     </div>
                     <p className="truncate text-sm text-white transition-colors group-hover:text-white/70">{monitor.url}</p>
                     <p className="mt-1 text-sm text-white/65">{monitor.condition}</p>
+                    {lastResults[monitor.id] && (
+                      <p className={`mt-2 text-xs ${lastResults[monitor.id].met ? "text-[#34D399]" : "text-white/40"}`}>
+                        {lastResults[monitor.id].met ? "Condition met — " : "Condition not met — "}
+                        {lastResults[monitor.id].reasoning}
+                      </p>
+                    )}
                   </Link>
                   <div className="flex shrink-0 flex-col gap-2">
                     <button
@@ -211,4 +219,4 @@ export default function DashboardPage() {
       </div>
     </div>
   );
-} 
+}

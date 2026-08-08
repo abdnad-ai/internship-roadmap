@@ -11,6 +11,7 @@ export default function MonitorDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [checking, setChecking] = useState(false);
+  const [lastResult, setLastResult] = useState<{ met: boolean; reasoning: string } | null>(null);
 
   const load = useCallback(async () => {
     try {
@@ -31,7 +32,8 @@ export default function MonitorDetailPage() {
   async function handleCheckNow() {
     setChecking(true);
     try {
-      await api.checkMonitor(params.id);
+      const result = await api.checkMonitor(params.id);
+      setLastResult({ met: result.met, reasoning: result.checkLog.aiReasoning });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Check failed");
     } finally {
@@ -69,7 +71,7 @@ export default function MonitorDetailPage() {
         <p className="mb-1 break-all text-sm text-white">{monitor.url}</p>
         <p className="mb-6 text-white/65">{monitor.condition}</p>
 
-        <div className="mb-8 flex flex-wrap gap-3">
+        <div className="mb-4 flex flex-wrap gap-3">
           <button
             onClick={handleCheckNow}
             disabled={checking}
@@ -90,6 +92,14 @@ export default function MonitorDetailPage() {
             Delete
           </button>
         </div>
+
+        {lastResult && (
+          <div className={`liquid-glass mb-8 rounded-2xl bg-white/[0.02] px-5 py-3 text-sm ${lastResult.met ? "text-[#34D399]" : "text-white/60"}`}>
+            {lastResult.met ? "Condition met — " : "Condition not met — "}
+            {lastResult.reasoning}
+          </div>
+        )}
+        {!lastResult && <div className="mb-8" />}
 
         <h2 className="mb-3 text-xs uppercase tracking-widest text-white/40">Check history</h2>
 

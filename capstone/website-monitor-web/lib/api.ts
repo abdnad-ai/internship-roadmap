@@ -1,4 +1,4 @@
-﻿export interface Monitor {
+﻿ export interface Monitor {
   id: string;
   url: string;
   sourceType: string;
@@ -26,6 +26,12 @@ export interface MonitorNotification {
   read: boolean;
   createdAt: string;
   monitor: Pick<Monitor, "id" | "url" | "condition">;
+}
+
+export interface CheckResult {
+  checkLog: CheckLog;
+  notification: { id: string; message: string; read: boolean; createdAt: string } | null;
+  met: boolean;
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
@@ -110,7 +116,7 @@ export const api = {
   updateMonitor: (id: string, data: Record<string, unknown>) =>
     apiFetch(`/monitors/${id}`, { method: "PATCH", body: JSON.stringify(data) }),
   deleteMonitor: (id: string) => apiFetch(`/monitors/${id}`, { method: "DELETE" }),
-  checkMonitor: (id: string) => apiFetch(`/monitors/${id}/check`, { method: "POST" }),
+  checkMonitor: (id: string): Promise<CheckResult> => apiFetch(`/monitors/${id}/check`, { method: "POST" }),
   getNotifications: (): Promise<MonitorNotification[]> => apiFetch("/notifications"),
   markNotificationRead: (id: string): Promise<MonitorNotification | null> =>
     apiFetch(`/notifications/${id}/read`, { method: "PATCH" }),
